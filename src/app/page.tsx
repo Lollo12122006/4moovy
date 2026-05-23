@@ -136,7 +136,7 @@ export default function Home() {
   
 
   return (
-    <main className="min-h-screen pt-32 bg-gradient-to-b from-[#f8fbfc] to-[#edf4f5] p-5 md:p-10">
+    <main className="min-h-screen bg-gradient-to-b from-[#f8fbfc] to-[#edf4f5]">
 
       <nav
         className="
@@ -235,6 +235,8 @@ export default function Home() {
         </div>
 
       </nav>
+
+      <div className="pt-32 px-5 md:px-10">
 
         {!showResults && ( 
           <div>
@@ -1203,6 +1205,7 @@ export default function Home() {
           </>
         )}
 
+      </div>
       
     </main>
   );
