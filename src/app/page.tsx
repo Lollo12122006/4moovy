@@ -138,34 +138,100 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#f8fbfc] to-[#edf4f5] p-5 md:p-10">
 
-      <nav className="flex items-center justify-between mb-16">
-        <div>
-          <h1 className="text-2xl font-bold text-[#0f3549]">
-            4Moovy
-          </h1>
+      <nav
+        className="
+          sticky
+          top-6
+          z-50
+          mb-16
+        "
+      >
 
-          <p className="text-sm text-[#73d2d2] font-medium">
-            Noleggio intelligente
-          </p>
+        <div className="
+          max-w-7xl
+          mx-auto
+          flex
+          items-center
+          justify-between
+          px-6
+          py-4
+          rounded-[28px]
+          border
+          border-white/40
+          bg-white/70
+          backdrop-blur-2xl
+          shadow-[0_10px_40px_rgba(15,53,73,0.08)]
+        ">
+
+          {/* LOGO */}
+          <div>
+
+            <h1 className="text-2xl font-bold text-[#0f3549] tracking-tight">
+              4Moovy
+            </h1>
+
+            <p className="text-sm text-[#73d2d2] font-medium">
+              Noleggio intelligente
+            </p>
+
+          </div>
+
+          {/* NAV */}
+          <div className="
+            hidden
+            md:flex
+            items-center
+            gap-10
+            text-sm
+            font-medium
+            text-[#0f3549]
+          ">
+
+            <a
+              href="/"
+              className="hover:text-[#73d2d2] transition-all duration-300"
+            >
+              Home
+            </a>
+
+            <a
+              href="/#confronto"
+              className="hover:text-[#73d2d2] transition-all duration-300"
+            >
+              Confronto
+            </a>
+
+            <a
+              href="/preventivo"
+              className="hover:text-[#73d2d2] transition-all duration-300"
+            >
+              Preventivo
+            </a>
+
+          </div>
+
+          {/* CTA */}
+          <button
+            className="
+              bg-[#0f3549]
+              text-white
+              px-6
+              py-3
+              rounded-2xl
+              font-semibold
+              transition-all
+              duration-300
+              hover:bg-[#133f57]
+              hover:shadow-[0_10px_30px_rgba(15,53,73,0.25)]
+              hover:scale-[1.02]
+            "
+          >
+            Contattaci
+          </button>
+
         </div>
 
-        <button className="
-                  bg-[#0f3549]
-                  text-white
-                  px-6
-                  py-3
-                  rounded-2xl
-                  font-medium
-                  transition-all
-                  duration-300
-                  hover:bg-[#133f57]
-                  hover:shadow-xl
-                " 
-        >
-          Contattaci
-        </button>
       </nav>
-      <div className="max-w-6xl mx-auto">
 
         {!showResults && ( 
           <div>
