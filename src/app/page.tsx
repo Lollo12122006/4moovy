@@ -141,9 +141,11 @@ export default function Home() {
       <nav
         className="
           sticky
-          top-6
+          top-4
           z-50
-          mb-16
+          mb-20
+          px-4
+          pt-4
         "
       >
 
