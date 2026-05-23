@@ -141,9 +141,10 @@ export default function Home() {
       <nav
         className="
           fixed
-          top-4
+          top-0
+          left-0
+          w-full
           z-50
-          mb-20
           px-4
           pt-4
         "
@@ -1202,7 +1203,6 @@ export default function Home() {
           </>
         )}
 
-      </div>
       
     </main>
   );
