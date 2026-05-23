@@ -276,7 +276,7 @@ export default function Home() {
                     Scegli il veicolo
                   </p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                  <div id="confronto" className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
 
                   {Object.entries(carData).map(([name, car]) => (
                     <button

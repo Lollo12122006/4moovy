@@ -850,15 +850,29 @@ function PreventivoContent() {
 
                     <div className="space-y-4">
 
-                        {[
-                        "Home",
-                        "Preventivi",
-                        "Confronto",
-                        "FAQ",
-                        ].map((item) => (
-                        <p
-                            key={item}
+                    {[
+                        {
+                            label: "Home",
+                            href: "/",
+                        },
+                        {
+                            label: "Preventivo",
+                            href: "/preventivo",
+                        },
+                        {
+                            label: "Confronto",
+                            href: "/#confronto",
+                        },
+                        {
+                            label: "FAQ",
+                            href: "/preventivo#faq",
+                        },
+                      ].map((item) => (
+                        <Link
+                            key={item.label}
+                            href={item.href}
                             className="
+                            block
                             text-gray-300
                             hover:text-white
                             transition-all
@@ -866,9 +880,9 @@ function PreventivoContent() {
                             cursor-pointer
                             "
                         >
-                            {item}
-                        </p>
-                        ))}
+                            {item.label}
+                        </Link>
+                    ))}
 
                     </div>
 
