@@ -1,9 +1,9 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";;
+import { Suspense, useState } from "react";;
 import Link from "next/link";
-export default function PreventivoPage() {
+function PreventivoContent() {
 
     const searchParams = useSearchParams();
   
@@ -940,5 +940,13 @@ export default function PreventivoPage() {
                 </footer>
     
       </main>
+    );
+  }
+
+  export default function PreventivoPage() {
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <PreventivoContent />
+      </Suspense>
     );
   }
