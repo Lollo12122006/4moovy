@@ -136,11 +136,11 @@ export default function Home() {
   
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#f8fbfc] to-[#edf4f5] p-5 md:p-10">
+    <main className="min-h-screen pt-32 bg-gradient-to-b from-[#f8fbfc] to-[#edf4f5] p-5 md:p-10">
 
       <nav
         className="
-          sticky
+          fixed
           top-4
           z-50
           mb-20
