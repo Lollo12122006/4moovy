@@ -714,9 +714,9 @@ function PreventivoContent() {
                         shadow-xl
                     "
                     >
-                    {duration === "36 mesi"
-                        ? "Blocca offerta 36 mesi"
-                        : "Blocca offerta 48 mesi"}
+                        {duration === "36 mesi"
+                            ? "Blocca offerta 36 mesi"
+                            : "Blocca offerta 48 mesi"}
                     </button>
 
                     <p className="
