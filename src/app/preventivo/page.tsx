@@ -342,13 +342,13 @@ function PreventivoContent() {
 
                 {/* CONFIG */}
                 <div className="
-                bg-white/80
-                backdrop-blur-2xl
-                border
-                border-white
-                rounded-[40px]
-                p-8
-                shadow-[0_20px_60px_rgba(15,53,73,0.08)]
+                    bg-white/80
+                    backdrop-blur-2xl
+                    border
+                    border-white
+                    rounded-[40px]
+                    p-8
+                    shadow-[0_20px_60px_rgba(15,53,73,0.08)]
                 ">
 
                 <p className="text-sm uppercase tracking-[0.2em] text-[#73d2d2] font-semibold mb-4">
@@ -477,6 +477,8 @@ function PreventivoContent() {
 
                 {/* PREVENTIVO */}
                 <div className="
+                    sticky 
+                    top-28
                     relative
                     overflow-hidden
                     rounded-[40px]
@@ -561,11 +563,11 @@ function PreventivoContent() {
 
                     <div className="flex items-center justify-between border-b border-white/10 pb-4">
                         <span className="text-gray-300">
-                        Consegna prevista
+                            Consegna prevista
                         </span>
 
                         <span className="font-semibold">
-                        {pricingData[selectedCar]?.delivery}
+                            {pricingData[selectedCar]?.delivery}
                         </span>
                     </div>
 
@@ -712,7 +714,9 @@ function PreventivoContent() {
                         shadow-xl
                     "
                     >
-                    Richiedi configurazione personalizzata
+                    {duration === "36 mesi"
+                        ? "Blocca offerta 36 mesi"
+                        : "Blocca offerta 48 mesi"}
                     </button>
 
                     <p className="
