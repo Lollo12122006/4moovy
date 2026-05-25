@@ -512,8 +512,8 @@ function PreventivoContent() {
                         Offerta consigliata
                     </div>
 
-                    <h2 className="text-4xl md:text-5xl font-bold mb-10">
-                    €{finalPrice}
+                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight drop-shadow-[0_0_30px_rgba(115,210,210,0.35) mb-10">
+                        €{finalPrice}
                     <span className="text-2xl text-gray-300">
                         /mese
                     </span>
@@ -523,31 +523,31 @@ function PreventivoContent() {
 
                     <div className="flex items-center justify-between border-b border-white/10 pb-4">
                         <span className="text-gray-300">
-                        Durata
+                            Durata
                         </span>
 
                         <span className="font-semibold">
-                        {duration}
+                            {duration}
                         </span>
                     </div>
 
                     <div className="flex items-center justify-between border-b border-white/10 pb-4">
                         <span className="text-gray-300">
-                        Chilometri inclusi
+                            Chilometri inclusi
                         </span>
 
                         <span className="font-semibold">
-                        {annualKm}/Anno
+                            {annualKm}/Anno
                         </span>
                     </div>
 
                     <div className="flex items-center justify-between border-b border-white/10 pb-4">
                         <span className="text-gray-300">
-                        Anticipo
+                            Anticipo
                         </span>
 
                         <span className="font-semibold">
-                        {upfront}
+                            {upfront}
                         </span>
                     </div>
 
