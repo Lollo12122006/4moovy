@@ -138,18 +138,25 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#f8fbfc] to-[#edf4f5]">
 
+      <div className="fixed top-0 left-0 w-full z-[9999] px-4 pt-4">
+
       <nav
         className="
-          fixed
-          top-0
-          left-0
-          w-full
-          z-50
-          px-4
-          pt-4
+          max-w-7xl
+          mx-auto
+          flex
+          items-center
+          justify-between
+          px-6
+          py-4
+          rounded-[28px]
+          border
+          border-white/40
+          bg-white/80
+          backdrop-blur-2xl
+          shadow-[0_10px_40px_rgba(15,53,73,0.08)]
         "
       >
-
         <div className="
           max-w-7xl
           mx-auto
@@ -235,6 +242,7 @@ export default function Home() {
         </div>
 
       </nav>
+      </div>
 
       <div className="pt-32 px-5 md:px-10">
 
@@ -1206,7 +1214,7 @@ export default function Home() {
         )}
 
       </div>
-      
+
     </main>
   );
 }
