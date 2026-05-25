@@ -5,6 +5,7 @@ import Link from "next/link";
 
 export default function Home() {
   const [showResults, setShowResults] = useState(false);
+  const [showConfigurator, setShowConfigurator] = useState(false);
   const [selectedCar, setSelectedCar] = useState("")
   const [driverProfile, setDriverProfile] = useState("");
   const isNewDriver = driverProfile === "Neopatentato";
@@ -478,8 +479,44 @@ export default function Home() {
                       >
                         {selectedCar === name
                           ? "Selezionata"
-                          : "Confronta"}
+                          : "Seleziona"}
                       </div>
+
+                      {selectedCar && (
+
+                        <div className="mt-12 flex justify-center">
+
+                          <button
+                            onClick={() => {
+                              setShowConfigurator(true)
+
+                              setTimeout(() => {
+                                window.scrollTo({
+                                  top: 1200,
+                                  behavior: "smooth",
+                                })
+                              }, 100)
+                            }}
+                            className="
+                              bg-[#ffdc46]
+                              text-[#0f3549]
+                              px-10
+                              py-5
+                              rounded-[24px]
+                              text-lg
+                              font-bold
+                              hover:scale-[1.02]
+                              transition-all
+                              duration-300
+                              shadow-[0_20px_50px_rgba(255,220,70,0.35)]
+                            "
+                          >
+                            Vai al confronto
+                          </button>
+
+                        </div>
+
+                        )}
 
                     </button>
                   ))}
@@ -487,6 +524,44 @@ export default function Home() {
                   </div>
                   </div>
                   </div>
+
+                  {selectedCar && !showConfigurator && (
+
+                    <div className="mt-12 flex justify-center">
+
+                      <button
+                        onClick={() => {
+                          setShowConfigurator(true)
+
+                          setTimeout(() => {
+                            window.scrollTo({
+                              top: 1100,
+                              behavior: "smooth",
+                            })
+                          }, 100)
+                        }}
+                        className="
+                          bg-[#ffdc46]
+                          text-[#0f3549]
+                          px-10
+                          py-5
+                          rounded-[24px]
+                          text-lg
+                          font-bold
+                          hover:scale-[1.02]
+                          transition-all
+                          duration-300
+                          shadow-[0_20px_50px_rgba(255,220,70,0.35)]
+                        "
+                      >
+                        Vai al confronto
+                      </button>
+
+                    </div>
+
+                    )}
+
+                  {showConfigurator && (
 
                   <div className="mt-14 grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -632,9 +707,14 @@ export default function Home() {
 
                     </div>
 
+                  
                   </div>
+
+                )}
+                  
                 </div>
-              </div> 
+              </div>
+              
         )}
         
         {showResults && (
