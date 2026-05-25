@@ -593,9 +593,9 @@ function PreventivoContent() {
                             </p>
 
                             <p className="text-2xl font-bold">
-                                {upfront === "0€"
-                                    ? "Senza anticipo"
-                                    : `Anticipo ${upfront}`}
+                            {upfront === "0€"
+                                ? "Senza anticipo obbligatorio"
+                                : `Anticipo iniziale ${upfront}`}
                             </p>
 
                         </div>
