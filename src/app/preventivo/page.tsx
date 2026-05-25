@@ -512,7 +512,7 @@ function PreventivoContent() {
                         Offerta consigliata
                     </div>
 
-                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight drop-shadow-[0_0_30px_rgba(115,210,210,0.35) mb-10">
+                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight drop-shadow-[0_0_30px_rgba(115,210,210,0.35) transition-all duration-500 mb-10">
                         €{finalPrice}
                     <span className="text-2xl text-gray-300">
                         /mese
