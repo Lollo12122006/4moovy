@@ -472,51 +472,96 @@ export default function Home() {
                           ease-out
                           ${
                             selectedCar === name
-                              ? "bg-[#ffdc46] text-[#0f3549]"
+                              ? "border-[#ffdc46] bg-[#0f3549]"
                               : "bg-white text-black group-hover:bg-gray-100"
                           }
                         `}
                       >
-                        {selectedCar === name
-                          ? "Selezionata"
-                          : "Seleziona"}
-                      </div>
+                        {selectedCar === name ? (
 
-                      {selectedCar && (
+                        <div className="mt-6 space-y-4">
 
-                        <div className="mt-12 flex justify-center">
+                          <div className="flex justify-center">
 
-                          <button
-                            onClick={() => {
-                              setShowConfigurator(true)
+                            <div
+                              className="
+                                inline-flex
+                                items-center
+                                gap-2
+                                rounded-full
+                                bg-[#ffdc46]
+                                text-[#0f3549]
+                                px-4
+                                py-2
+                                text-sm
+                                font-bold
+                                shadow-md
+                              "
+                            >
+                              ✓ Selezionata
+                            </div>
 
-                              setTimeout(() => {
-                                window.scrollTo({
-                                  top: 1200,
-                                  behavior: "smooth",
-                                })
-                              }, 100)
-                            }}
+                          </div>
+
+                            {!showConfigurator && (
+
+                                <div
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                              
+                                  setShowConfigurator(true)
+                              
+                                  setTimeout(() => {
+                                    window.scrollTo({
+                                      top: 1100,
+                                      behavior: "smooth",
+                                    })
+                                  }, 100)
+                                }}
+                                className="
+                                  w-full
+                                  shadow-md
+                                  border
+                                  border-gray-200
+                                  rounded-2xl
+                                  py-3
+                                  text-center
+                                  font-bold
+                                  bg-white
+                                  text-[#0f3549]
+                                  hover:bg-gray-100
+                                  transition-all
+                                  duration-300
+                                  cursor-pointer
+                                "
+                              >
+                                Vai al confronto
+                              </div>
+                              
+
+                            )}
+
+                          </div>
+
+                          ) : (
+
+                          <div
                             className="
-                              bg-[#ffdc46]
-                              text-[#0f3549]
-                              px-10
-                              py-5
-                              rounded-[24px]
-                              text-lg
-                              font-bold
-                              hover:scale-[1.02]
-                              transition-all
-                              duration-300
-                              shadow-[0_20px_50px_rgba(255,220,70,0.35)]
+                              mt-3
+                              w-full
+                              rounded-2xl
+                              py-2
+                              text-center
+                              font-semibold
+                              bg-white
+                              text-black
                             "
                           >
-                            Vai al confronto
-                          </button>
+                            Confronta
+                          </div>
 
-                        </div>
-
-                        )}
+                          )}
+                      </div>
 
                     </button>
                   ))}
@@ -525,41 +570,7 @@ export default function Home() {
                   </div>
                   </div>
 
-                  {selectedCar && !showConfigurator && (
-
-                    <div className="mt-12 flex justify-center">
-
-                      <button
-                        onClick={() => {
-                          setShowConfigurator(true)
-
-                          setTimeout(() => {
-                            window.scrollTo({
-                              top: 1100,
-                              behavior: "smooth",
-                            })
-                          }, 100)
-                        }}
-                        className="
-                          bg-[#ffdc46]
-                          text-[#0f3549]
-                          px-10
-                          py-5
-                          rounded-[24px]
-                          text-lg
-                          font-bold
-                          hover:scale-[1.02]
-                          transition-all
-                          duration-300
-                          shadow-[0_20px_50px_rgba(255,220,70,0.35)]
-                        "
-                      >
-                        Vai al confronto
-                      </button>
-
-                    </div>
-
-                    )}
+                  
 
                   {showConfigurator && (
 
