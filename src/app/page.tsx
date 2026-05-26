@@ -330,7 +330,7 @@ export default function Home() {
 
               </div>
               </div>
-
+            {!showConfigurator && (
             <div className="relative overflow-hidden bg-white/75 backdrop-blur-2xl rounded-[40px] shadow-[0_25px_80px_rgba(15,53,73,0.12)] p-8 md:p-12 border border-white/60 mt-14">
               <div className="absolute top-[-120px] right-[-120px] w-[320px] h-[320px] bg-[#73d2d2]/10 blur-3xl rounded-full"></div>
               <div className="flex items-center gap-4 mb-5">
@@ -504,41 +504,44 @@ export default function Home() {
                           </div>
 
                             {!showConfigurator && (
+                              
 
                                 <div
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                              
-                                  setShowConfigurator(true)
-                              
-                                  setTimeout(() => {
-                                    window.scrollTo({
-                                      top: 1100,
-                                      behavior: "smooth",
-                                    })
-                                  }, 100)
-                                }}
-                                className="
-                                  w-full
-                                  shadow-md
-                                  border
-                                  border-gray-200
-                                  rounded-2xl
-                                  py-3
-                                  text-center
-                                  font-bold
-                                  bg-white
-                                  text-[#0f3549]
-                                  hover:bg-gray-100
-                                  transition-all
-                                  duration-300
-                                  cursor-pointer
-                                "
-                              >
-                                Vai al confronto
+                                  
+
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                
+                                    setShowConfigurator(true)
+                                
+                                    setTimeout(() => {
+                                      window.scrollTo({
+                                        top: 1100,
+                                        behavior: "smooth",
+                                      })
+                                    }, 100)
+                                  }}
+                                  className="
+                                    w-full
+                                    shadow-md
+                                    border
+                                    border-gray-200
+                                    rounded-2xl
+                                    py-3
+                                    text-center
+                                    font-bold
+                                    bg-white
+                                    text-[#0f3549]
+                                    hover:bg-gray-100
+                                    transition-all
+                                    duration-300
+                                    cursor-pointer
+                                  "
+                                >
+                                  Vai al confronto
                               </div>
                               
-
+                                
                             )}
 
                           </div>
@@ -570,13 +573,51 @@ export default function Home() {
                   </div>
                   </div>
 
+                  </div>
+                  )}
                   
 
-                  {showConfigurator && (
 
-                  <div className="mt-14 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {showConfigurator && (
+                    <div className="mt-14 grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                     <div className="lg:col-span-2 bg-white border border-gray-200 rounded-[32px] p-8 shadow-sm">
+
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowConfigurator(false)
+
+                        setTimeout(() => {
+                          window.scrollTo({
+                            top: 900,
+                            behavior: "smooth",
+                          })
+                        }, 100)
+                      }}
+                      className="
+                        mb-6
+                        inline-flex
+                        items-center
+                        gap-2
+                        rounded-2xl
+                        border
+                        border-gray-200
+                        bg-white
+                        px-5
+                        py-3
+                        text-sm
+                        font-semibold
+                        text-[#0f3549]
+                        shadow-sm
+                        transition-all
+                        duration-300
+                        hover:bg-gray-100
+                      "
+                      >
+                      ← Torna alla selezione auto
+                    </button>
 
                       <h3 className="text-2xl font-bold text-[#0f3549] mb-8">
                         Configura il noleggio
@@ -721,10 +762,10 @@ export default function Home() {
                   
                   </div>
 
-                )}
+                  )}
                   
                 </div>
-              </div>
+              
               
         )}
         
