@@ -12,6 +12,7 @@ import FeatureGrid from "@/components/FeatureGrid";
 const carData = {
   "Fiat 500 Hybrid Icon": {
     image: "/cars/fiat500.jpg",
+    description: "Una piccola che non passa inosservata. Facile da parcheggiare, economica da gestire e perfetta per chi si muove in città tutti i giorni.",
     noleggio: "€406",
     acquisto: "€520",
     assicurazione: "€800-1.100/anno",
@@ -26,6 +27,7 @@ const carData = {
   },
   "Peugeot 208": {
     image: "/cars/peugeot208.jpg",
+    description: "Design moderno e abitacolo ben riuscito. Buona scelta per chi vuole qualcosa di più curato rispetto alla media della sua categoria.",
     noleggio: "€439",
     acquisto: "€570",
     assicurazione: "€850-1.200/anno",
@@ -40,6 +42,7 @@ const carData = {
   },
   "Toyota Yaris Hybrid": {
     image: "/cars/yaris.jpg",
+    description: "Una delle ibride più affidabili sul mercato. Consuma poco, si guida bene e raramente dà problemi — ideale se fai tanti chilometri.",
     noleggio: "€469",
     acquisto: "€610",
     assicurazione: "€900-1.250/anno",
@@ -54,6 +57,7 @@ const carData = {
   },
   "Volkswagen T-Cross": {
     image: "/cars/tcross.jpg",
+    description: "Il SUV compatto di Volkswagen fatto bene. Spazio interno sorprendente per la categoria, finiture solide e un'ottima tenuta di strada.",
     noleggio: "€512",
     acquisto: "€690",
     assicurazione: "€950-1.300/anno",
@@ -68,6 +72,7 @@ const carData = {
   },
   "Volvo XC40 B3": {
     image: "/cars/volvoxc40.jpg",
+    description: "La scelta di chi non vuole scendere a compromessi. Sicurezza eccellente, interni di qualità e una guida confortevole anche sui lunghi percorsi.",
     noleggio: "€778",
     acquisto: "€980",
     assicurazione: "€1.200-1.700/anno",
@@ -82,6 +87,7 @@ const carData = {
   },
   "Kia Picanto": {
     image: "/cars/kiapicanto.jpg",
+    description: "L'opzione più economica della selezione, senza sembrare economica. Affidabile, agile in città e con costi di gestione tra i più bassi della categoria.",
     noleggio: "€346",
     acquisto: "€290",
     assicurazione: "€750-950/anno",
@@ -96,6 +102,7 @@ const carData = {
   },
   "Nissan Juke": {
     image: "/cars/nissanjuke.jpg",
+    description: "Design divisivo, ma funziona. Abitacolo curato, buona tecnologia di serie e un comportamento su strada più dinamico di quanto sembri.",
     noleggio: "€554",
     acquisto: "€470",
     assicurazione: "€950-1.250/anno",
@@ -361,6 +368,7 @@ export default function Home() {
                       key={name}
                       name={name}
                       image={car.image}
+                      description={car.description}
                       price={car.noleggio}
                       alimentazione={car.alimentazione}
                       isSelected={selectedCar === name}

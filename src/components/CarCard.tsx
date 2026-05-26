@@ -3,6 +3,7 @@ import Image from "next/image";
 interface CarCardProps {
   name: string;
   image: string;
+  description?: string;
   price: string;
   alimentazione: string;
   isSelected: boolean;
@@ -14,6 +15,7 @@ interface CarCardProps {
 export default function CarCard({
   name,
   image,
+  description,
   price,
   alimentazione,
   isSelected,
@@ -64,9 +66,15 @@ export default function CarCard({
           {alimentazione}
         </span>
 
-        <h3 className="font-semibold text-[#0A0A0A] text-[15px] leading-tight mb-3">
+        <h3 className="font-semibold text-[#0A0A0A] text-[15px] leading-tight mb-2">
           {name}
         </h3>
+
+        {description && (
+          <p className="text-sm text-[#6B7280] leading-snug mb-3 line-clamp-2">
+            {description}
+          </p>
+        )}
 
         <div className="flex items-baseline gap-1 mb-4">
           <span className="text-2xl font-bold text-[#0f3549] price">{price}</span>
