@@ -12,7 +12,9 @@ import FeatureGrid from "@/components/FeatureGrid";
 const carData = {
   "Fiat 500 Hybrid Icon": {
     image: "/cars/fiat500.jpg",
-    description: "Una piccola che non passa inosservata. Facile da parcheggiare, economica da gestire e perfetta per chi si muove in città tutti i giorni.",
+    shortDescription: "City car iconica, economica e facile da parcheggiare.",
+    longDescription: "La Fiat 500 è una piccola che non passa inosservata. Nata per la città, è facile da guidare, economica da gestire e semplice da parcheggiare anche negli spazi più stretti. Una scelta intelligente per chi si muove principalmente in centro o in contesti urbani affollati.",
+    highlights: ["Consumi ridotti, ideale per uso urbano quotidiano", "Dimensioni compatte, parcheggio facilitato", "Costi di manutenzione tra i più bassi della categoria"],
     noleggio: "€406",
     acquisto: "€520",
     assicurazione: "€800-1.100/anno",
@@ -27,7 +29,9 @@ const carData = {
   },
   "Peugeot 208": {
     image: "/cars/peugeot208.jpg",
-    description: "Design moderno e abitacolo ben riuscito. Buona scelta per chi vuole qualcosa di più curato rispetto alla media della sua categoria.",
+    shortDescription: "Design originale, interni curati e una guida vivace per la categoria.",
+    longDescription: "La Peugeot 208 è una delle city car più raffinate del segmento. Interni con finiture di qualità, un design riconoscibile e un comportamento su strada piacevole. Una buona scelta per chi vuole qualcosa di più ricercato rispetto alla media, senza aumentare troppo il canone mensile.",
+    highlights: ["Design di interni originale e ben riuscito", "Guida vivace e coinvolgente per la categoria", "Buon equilibrio tra stile e praticità quotidiana"],
     noleggio: "€439",
     acquisto: "€570",
     assicurazione: "€850-1.200/anno",
@@ -42,7 +46,9 @@ const carData = {
   },
   "Toyota Yaris Hybrid": {
     image: "/cars/yaris.jpg",
-    description: "Una delle ibride più affidabili sul mercato. Consuma poco, si guida bene e raramente dà problemi — ideale se fai tanti chilometri.",
+    shortDescription: "Affidabile e risparmiosa, ideale per chi percorre tanti km.",
+    longDescription: "La Toyota Yaris ibrida è una delle auto più affidabili sul mercato. Il sistema hybrid Toyota riduce i consumi in modo significativo, soprattutto in città, e la qualità costruttiva garantisce pochi problemi nel tempo. Una scelta solida per chi fa tanti chilometri e vuole spendere poco in carburante e manutenzione.",
+    highlights: ["Motore ibrido con consumi reali tra i più bassi", "Affidabilità Toyota comprovata nel tempo", "Ottimo valore di rivendita a fine noleggio"],
     noleggio: "€469",
     acquisto: "€610",
     assicurazione: "€900-1.250/anno",
@@ -57,7 +63,9 @@ const carData = {
   },
   "Volkswagen T-Cross": {
     image: "/cars/tcross.jpg",
-    description: "Il SUV compatto di Volkswagen fatto bene. Spazio interno sorprendente per la categoria, finiture solide e un'ottima tenuta di strada.",
+    shortDescription: "SUV compatto Volkswagen: spazioso, solido e ben rifinito.",
+    longDescription: "Il Volkswagen T-Cross è uno dei SUV compatti meglio riusciti della categoria. Spazio interno sorprendente per le sue dimensioni, finiture di qualità tipicamente tedesche e una tenuta di strada sicura e prevedibile. Adatto sia all'uso quotidiano che ai viaggi più lunghi con famiglia o bagagli.",
+    highlights: ["Spazio interno ampio per la categoria", "Finiture e qualità costruttiva tipicamente VW", "Tenuta di strada stabile e rassicurante"],
     noleggio: "€512",
     acquisto: "€690",
     assicurazione: "€950-1.300/anno",
@@ -72,7 +80,9 @@ const carData = {
   },
   "Volvo XC40 B3": {
     image: "/cars/volvoxc40.jpg",
-    description: "La scelta di chi non vuole scendere a compromessi. Sicurezza eccellente, interni di qualità e una guida confortevole anche sui lunghi percorsi.",
+    shortDescription: "Premium svedese, sicurezza eccellente e comfort superiore.",
+    longDescription: "La Volvo XC40 è la scelta di chi non vuole scendere a compromessi. Interni di qualità premium, tecnologie di sicurezza tra le più avanzate del mercato e una guida confortevole anche sui percorsi più lunghi. Il B3 mild hybrid bilancia bene prestazioni e consumi, mantenendo il carattere elegante tipico di Volvo.",
+    highlights: ["Sistemi di sicurezza attiva tra i migliori della categoria", "Interni premium con materiali di qualità superiore", "Comfort di guida eccellente su tutti i percorsi"],
     noleggio: "€778",
     acquisto: "€980",
     assicurazione: "€1.200-1.700/anno",
@@ -87,7 +97,9 @@ const carData = {
   },
   "Kia Picanto": {
     image: "/cars/kiapicanto.jpg",
-    description: "L'opzione più economica della selezione, senza sembrare economica. Affidabile, agile in città e con costi di gestione tra i più bassi della categoria.",
+    shortDescription: "L'opzione più economica: compatta, affidabile e a basso costo.",
+    longDescription: "La Kia Picanto è la scelta più accessibile della selezione, ma non per questo deludente. Affidabile, semplice da guidare e con costi di gestione tra i più contenuti del mercato. Perfetta per chi cerca la soluzione essenziale per la città, senza rinunciare all'affidabilità nel tempo.",
+    highlights: ["Canone mensile tra i più bassi della selezione", "Affidabilità Kia con garanzia pluriennale", "Dimensioni compatte, ideale per uso urbano"],
     noleggio: "€346",
     acquisto: "€290",
     assicurazione: "€750-950/anno",
@@ -102,7 +114,9 @@ const carData = {
   },
   "Nissan Juke": {
     image: "/cars/nissanjuke.jpg",
-    description: "Design divisivo, ma funziona. Abitacolo curato, buona tecnologia di serie e un comportamento su strada più dinamico di quanto sembri.",
+    shortDescription: "SUV compatto dinamico, tecnologia e stile senza compromessi.",
+    longDescription: "Il Nissan Juke divide i gusti per il design, ma convince chi lo guida. L'abitacolo è curato, la tecnologia di bordo è aggiornata e il comportamento su strada è più dinamico di quanto le dimensioni facciano pensare. Una buona scelta per chi vuole un SUV compatto con carattere.",
+    highlights: ["Tecnologia di bordo aggiornata e intuitiva", "Guida dinamica e piacevole per un SUV compatto", "Design riconoscibile e distintivo"],
     noleggio: "€554",
     acquisto: "€470",
     assicurazione: "€950-1.250/anno",
@@ -368,7 +382,7 @@ export default function Home() {
                       key={name}
                       name={name}
                       image={car.image}
-                      description={car.description}
+                      description={car.shortDescription}
                       price={car.noleggio}
                       alimentazione={car.alimentazione}
                       isSelected={selectedCar === name}

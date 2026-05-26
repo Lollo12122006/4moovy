@@ -66,6 +66,45 @@ const services = [
   },
 ];
 
+const carDetails: Record<string, { longDescription: string; highlights: string[] }> = {
+  "Fiat 500 Hybrid Icon": {
+    longDescription: "La Fiat 500 è una piccola che non passa inosservata. Nata per la città, è facile da guidare, economica da gestire e semplice da parcheggiare anche negli spazi più stretti. Una scelta intelligente per chi si muove principalmente in centro o in contesti urbani affollati.",
+    highlights: ["Consumi ridotti, ideale per uso urbano quotidiano", "Dimensioni compatte, parcheggio facilitato", "Costi di manutenzione tra i più bassi della categoria"],
+  },
+  "Toyota Yaris Hybrid": {
+    longDescription: "La Toyota Yaris ibrida è una delle auto più affidabili sul mercato. Il sistema hybrid Toyota riduce i consumi in modo significativo, soprattutto in città, e la qualità costruttiva garantisce pochi problemi nel tempo. Una scelta solida per chi fa tanti chilometri e vuole spendere poco in carburante e manutenzione.",
+    highlights: ["Motore ibrido con consumi reali tra i più bassi", "Affidabilità Toyota comprovata nel tempo", "Ottimo valore di rivendita a fine noleggio"],
+  },
+  "Nissan Juke": {
+    longDescription: "Il Nissan Juke divide i gusti per il design, ma convince chi lo guida. L'abitacolo è curato, la tecnologia di bordo è aggiornata e il comportamento su strada è più dinamico di quanto le dimensioni facciano pensare. Una buona scelta per chi vuole un SUV compatto con carattere.",
+    highlights: ["Tecnologia di bordo aggiornata e intuitiva", "Guida dinamica e piacevole per un SUV compatto", "Design riconoscibile e distintivo"],
+  },
+  "Volkswagen T-Cross": {
+    longDescription: "Il Volkswagen T-Cross è uno dei SUV compatti meglio riusciti della categoria. Spazio interno sorprendente per le sue dimensioni, finiture di qualità tipicamente tedesche e una tenuta di strada sicura e prevedibile. Adatto sia all'uso quotidiano che ai viaggi più lunghi con famiglia o bagagli.",
+    highlights: ["Spazio interno ampio per la categoria", "Finiture e qualità costruttiva tipicamente VW", "Tenuta di strada stabile e rassicurante"],
+  },
+  "Volvo XC40 B3": {
+    longDescription: "La Volvo XC40 è la scelta di chi non vuole scendere a compromessi. Interni di qualità premium, tecnologie di sicurezza tra le più avanzate del mercato e una guida confortevole anche sui percorsi più lunghi. Il B3 mild hybrid bilancia bene prestazioni e consumi, mantenendo il carattere elegante tipico di Volvo.",
+    highlights: ["Sistemi di sicurezza attiva tra i migliori della categoria", "Interni premium con materiali di qualità superiore", "Comfort di guida eccellente su tutti i percorsi"],
+  },
+  "Peugeot 208": {
+    longDescription: "La Peugeot 208 è una delle city car più raffinate del segmento. Interni con finiture di qualità, un design riconoscibile e un comportamento su strada piacevole. Una buona scelta per chi vuole qualcosa di più ricercato rispetto alla media, senza aumentare troppo il canone mensile.",
+    highlights: ["Design di interni originale e ben riuscito", "Guida vivace e coinvolgente per la categoria", "Buon equilibrio tra stile e praticità quotidiana"],
+  },
+  "Kia Picanto": {
+    longDescription: "La Kia Picanto è la scelta più accessibile della selezione, ma non per questo deludente. Affidabile, semplice da guidare e con costi di gestione tra i più contenuti del mercato. Perfetta per chi cerca la soluzione essenziale per la città, senza rinunciare all'affidabilità nel tempo.",
+    highlights: ["Canone mensile tra i più bassi della selezione", "Affidabilità Kia con garanzia pluriennale", "Dimensioni compatte, ideale per uso urbano"],
+  },
+  "Fiat 500X": {
+    longDescription: "La Fiat 500X prende il carattere della 500 classica e lo mette in un formato più pratico e spazioso. Buon compromesso tra stile italiano, abitabilità reale e costi di gestione ragionevoli. Una scelta valida per chi vuole qualcosa di più grande della city car senza passare a un SUV premium.",
+    highlights: ["Stile italiano riconoscibile in formato più pratico", "Abitabilità superiore rispetto alla 500 classica", "Costi di gestione contenuti per la categoria SUV"],
+  },
+  "Jeep Renegade": {
+    longDescription: "La Jeep Renegade porta il DNA fuoristrada della casa americana in un formato compatto adatto anche all'uso quotidiano. Robusta, con una buona altezza da terra e il 4x4 disponibile per chi ne ha davvero bisogno. In città si guida bene, fuori dalla città si difende meglio di quasi tutti i suoi concorrenti.",
+    highlights: ["Capacità fuoristrada reali con trazione integrale disponibile", "Robustezza e solidità costruttiva tipica Jeep", "Versatile: comoda in città, capace fuori strada"],
+  },
+};
+
 const faqs = [
   {
     question: "Cosa include il canone mensile?",
@@ -155,10 +194,28 @@ function PreventivoContent() {
                 <span className="text-[#0f3549]">{selectedCar}</span>
               </h1>
 
-              <p className="text-base text-[#6B7280] leading-relaxed max-w-lg mb-8">
-                Scopri la soluzione più adatta alle tue esigenze con costi
-                trasparenti e un preventivo personalizzato in 60 secondi.
+              <p className="text-sm text-[#6B7280] leading-relaxed max-w-lg mb-5">
+                {carDetails[selectedCar]?.longDescription ?? "Scopri la soluzione più adatta alle tue esigenze con costi trasparenti e un preventivo personalizzato in 60 secondi."}
               </p>
+
+              {carDetails[selectedCar]?.highlights && (
+                <ul className="space-y-2 mb-8">
+                  {carDetails[selectedCar].highlights.map((point) => (
+                    <li key={point} className="flex items-start gap-2.5">
+                      <svg
+                        className="w-4 h-4 text-[#0f3549] mt-0.5 shrink-0"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-[#6B7280]">{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
 
               <div className="flex flex-wrap gap-3 mb-10">
                 <Link

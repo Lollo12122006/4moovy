@@ -3,7 +3,7 @@ import Image from "next/image";
 interface CarCardProps {
   name: string;
   image: string;
-  description?: string;
+  description?: string; // shortDescription — 1 visible line
   price: string;
   alimentazione: string;
   isSelected: boolean;
@@ -71,7 +71,7 @@ export default function CarCard({
         </h3>
 
         {description && (
-          <p className="text-sm text-[#6B7280] leading-snug mb-3 line-clamp-2">
+          <p className="text-sm text-[#6B7280] leading-snug mb-3 line-clamp-1">
             {description}
           </p>
         )}
