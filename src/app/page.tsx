@@ -611,36 +611,33 @@ export default function Home() {
             </div>
 
             <div className="min-w-[800px]">
-              <div className="grid grid-cols-3 gap-4 mb-5">
+              {/* 4-col grid: col1=spacer, col2=selected, col3=similar1, col4=similar2 */}
+              <div className="grid grid-cols-4 gap-4 mb-5">
+                <div />
                 {[
                   {
                     name: selectedCar,
                     image: currentCar?.image ?? "",
                     monthly: rentalPrice,
-                    fuel: currentCar?.alimentazione ?? "",
-                    total: totalRental,
                     isSelected: true,
+                    isCheaper: false,
                   },
                   ...similarCars.map((n) => ({
                     name: n,
                     image: carData[n as keyof typeof carData]?.image ?? "",
                     monthly: carData[n as keyof typeof carData]?.noleggio ?? "€0",
-                    fuel: carData[n as keyof typeof carData]?.alimentazione ?? "",
-                    total: is36Months
-                      ? `€${(parseInt(carData[n as keyof typeof carData]?.noleggio.replace(/[^\d]/g, "") ?? "0") * 36).toLocaleString("it-IT")}`
-                      : `€${(parseInt(carData[n as keyof typeof carData]?.noleggio.replace(/[^\d]/g, "") ?? "0") * 48).toLocaleString("it-IT")}`,
                     isSelected: false,
                     isCheaper:
                       parseInt(carData[n as keyof typeof carData]?.noleggio.replace(/[^\d]/g, "") ?? "0") <
                       parseInt(rentalPrice.replace(/[^\d]/g, "")),
                   })),
-                ].map((car: any, index) => (
+                ].map((car, index) => (
                   <div
                     key={index}
                     className={`rounded-[24px] border p-5 ${
                       car.isSelected
                         ? "bg-[#0f3549] border-[#ffdc46] text-white shadow-lg"
-                        : "bg-[#F8F9FA] border-[#E5E7EB]"
+                        : "bg-white border-[#E5E7EB]"
                     }`}
                   >
                     <div className="relative aspect-[16/10] mb-4">
@@ -648,11 +645,11 @@ export default function Home() {
                         src={car.image}
                         alt={car.name}
                         fill
-                        sizes="300px"
+                        sizes="250px"
                         className="object-contain"
                       />
                     </div>
-                    <div className="flex flex-wrap gap-1.5 mb-3">
+                    <div className="flex flex-wrap gap-1.5 mb-3 min-h-[24px]">
                       {car.isSelected && (
                         <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-[#ffdc46] text-[#0f3549]">
                           ✓ Selezionata
@@ -664,7 +661,7 @@ export default function Home() {
                         </span>
                       )}
                     </div>
-                    <h3 className={`text-base font-bold mb-1 ${car.isSelected ? "text-white" : "text-[#0f3549]"}`}>
+                    <h3 className={`text-base font-bold mb-1 ${car.isSelected ? "text-white" : "text-[#0A0A0A]"}`}>
                       {car.name}
                     </h3>
                     <p className={`text-sm ${car.isSelected ? "text-[#73d2d2]" : "text-gray-500"}`}>
@@ -674,7 +671,7 @@ export default function Home() {
                 ))}
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {[
                   {
                     label: "Canone mensile",
@@ -699,17 +696,18 @@ export default function Home() {
                     ],
                   },
                 ].map((row, ri) => (
-                  <div key={ri} className="grid grid-cols-3 gap-4">
+                  /* 4-col grid matches header above: label | selected | similar1 | similar2 */
+                  <div key={ri} className="grid grid-cols-4 gap-4">
                     <div className="flex items-center text-sm font-semibold text-[#0f3549]">
                       {row.label}
                     </div>
                     {row.values.map((val, vi) => (
                       <div
                         key={vi}
-                        className={`rounded-xl px-4 py-3 text-center text-sm font-medium ${
+                        className={`rounded-xl px-4 py-3 text-center text-sm font-medium border ${
                           vi === 0
-                            ? "bg-[#0f3549] text-white border border-[#ffdc46]"
-                            : "bg-[#F8F9FA] text-[#0f3549] border border-[#E5E7EB]"
+                            ? "bg-[#0f3549] text-white border-[#ffdc46]"
+                            : "bg-white text-[#0A0A0A] border-[#E5E7EB]"
                         }`}
                       >
                         {val}
