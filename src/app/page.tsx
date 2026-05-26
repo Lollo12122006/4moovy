@@ -22,6 +22,11 @@ export default function Home() {
       prezzoAuto: "€18.900",
       assicurazioneAnnua: 950,
       manutenzioneAnnua: 700,
+      alimentazione: "Hybrid", 
+      simili: [
+        "Kia Picanto",
+        "Toyota Yaris",
+      ],
     },
   
     "Peugeot 208": {
@@ -35,6 +40,11 @@ export default function Home() {
       prezzoAuto: "€22.500",
       assicurazioneAnnua: 1050,
       manutenzioneAnnua: 850,
+      alimentazione: "Benzina/Diesel",
+      simili: [
+        "Toyota Yaris",
+        "Fiat 500 Hybrid Icon",
+      ],
     },
   
     "Toyota Yaris Hybrid": {
@@ -48,6 +58,11 @@ export default function Home() {
       prezzoAuto: "€24.900",
       assicurazioneAnnua: 1100,
       manutenzioneAnnua: 900,
+      alimentazione: "Hybrid",
+      simili: [
+        "Kia Picanto",
+        "Fiat 500 Hybrid Icon",
+      ],
     },
 
     "Volkswagen T-Cross": {
@@ -61,6 +76,11 @@ export default function Home() {
       prezzoAuto: "€29.718",
       assicurazioneAnnua: 1150,
       manutenzioneAnnua: 950,
+      alimentazione: "Benzina",
+      simili: [
+        "Volvo XC40 B3",
+        "Nissan Juke",
+      ],
     },
 
     "Volvo XC40 B3": {
@@ -74,6 +94,11 @@ export default function Home() {
       prezzoAuto: "€44.365",
       assicurazioneAnnua: 1450,
       manutenzioneAnnua: 1200,
+      alimentazione: "Mild Hybrid",
+      simili: [
+        "Volkswagen T-Cross",
+        "Nissan Juke",
+      ],
     },
 
     "Kia Picanto": {
@@ -87,6 +112,11 @@ export default function Home() {
       prezzoAuto: "€18.300",
       assicurazioneAnnua: 850,
       manutenzioneAnnua: 500,
+      alimentazione: "Benzina",
+      simili: [
+        "Fiat 500 Hybrid Icon",
+        "Toyota Yaris",
+      ],
     },
 
     "Nissan Juke": {
@@ -100,10 +130,17 @@ export default function Home() {
       prezzoAuto: "€31.700",
       assicurazioneAnnua: 1100,
       manutenzioneAnnua: 750,
+      alimentazione: "Hybrid",
+      simili: [
+        "Volkswagen T-Cross",
+        "Volvo XC40 B3",
+      ],
     },
   };
   const currentCar =
   carData[selectedCar as keyof typeof carData] || null;
+  const similarCars =
+  currentCar?.simili || ["Fiat 500", "Toyota Yaris"]
   const is36Months = contractDuration === "36 mesi";
   const insuranceCost = isNewDriver
     ? "€1.400/anno"
@@ -148,8 +185,8 @@ export default function Home() {
           flex
           items-center
           justify-between
-          px-6
-          py-4
+          px-8
+          py-5
           rounded-[28px]
           border
           border-white/40
@@ -158,89 +195,76 @@ export default function Home() {
           shadow-[0_10px_40px_rgba(15,53,73,0.08)]
         "
       >
-        <div className="
-          max-w-7xl
-          mx-auto
-          flex
-          items-center
-          justify-between
-          px-6
-          py-4
-          rounded-[28px]
-          border
-          border-white/40
-          bg-white/70
-          backdrop-blur-2xl
-          shadow-[0_10px_40px_rgba(15,53,73,0.08)]
-        ">
 
-          {/* LOGO */}
-          <div>
+        {/* LOGO */}
+        <div>
 
-            <h1 className="text-2xl font-bold text-[#0f3549] tracking-tight">
-              4Moovy
-            </h1>
+          <h1 className="text-2xl font-bold text-[#0f3549] tracking-tight">
+            4Moovy
+          </h1>
 
-            <p className="text-sm text-[#73d2d2] font-medium">
-              Noleggio intelligente
-            </p>
+          <p className="text-sm text-[#73d2d2] font-medium">
+            Noleggio intelligente
+          </p>
 
-          </div>
+        </div>
 
-          {/* NAV */}
-          <div className="
+        {/* NAV */}
+        <div
+          className="
             hidden
             md:flex
             items-center
-            gap-10
+            gap-12
             text-sm
             font-medium
             text-[#0f3549]
-          ">
+            ml-auto
+            mr-10
+          "
+        >
 
-            <a
-              href="/"
-              className="hover:text-[#73d2d2] transition-all duration-300"
-            >
-              Home
-            </a>
-
-            <a
-              href="/#confronto"
-              className="hover:text-[#73d2d2] transition-all duration-300"
-            >
-              Confronto
-            </a>
-
-            <a
-              href="/preventivo"
-              className="hover:text-[#73d2d2] transition-all duration-300"
-            >
-              Preventivo
-            </a>
-
-          </div>
-
-          {/* CTA */}
-          <button
-            className="
-              bg-[#0f3549]
-              text-white
-              px-6
-              py-3
-              rounded-2xl
-              font-semibold
-              transition-all
-              duration-300
-              hover:bg-[#133f57]
-              hover:shadow-[0_10px_30px_rgba(15,53,73,0.25)]
-              hover:scale-[1.02]
-            "
+          <a
+            href="/"
+            className="hover:text-[#73d2d2] transition-all duration-300"
           >
-            Contattaci
-          </button>
+            Home
+          </a>
+
+          <a
+            href="/#confronto"
+            className="hover:text-[#73d2d2] transition-all duration-300"
+          >
+            Confronto
+          </a>
+
+          <a
+            href="/preventivo"
+            className="hover:text-[#73d2d2] transition-all duration-300"
+          >
+            Preventivo
+          </a>
 
         </div>
+
+        {/* CTA */}
+        <button
+          className="
+            bg-[#0f3549]
+            text-white
+            px-6
+            py-3
+            rounded-2xl
+            font-semibold
+            transition-all
+            duration-300
+            hover:bg-[#133f57]
+            hover:shadow-[0_10px_30px_rgba(15,53,73,0.25)]
+            hover:scale-[1.02]
+          "
+        >
+          Contattaci
+        </button>
 
       </nav>
       </div>
@@ -1059,6 +1083,282 @@ export default function Home() {
               </table>
             </div>
 
+            <div className="mt-14 bg-white rounded-[32px] p-6 md:p-8 shadow-lg border border-gray-100 overflow-x-auto">
+
+              <div className="flex items-center justify-between mb-8">
+
+                <div>
+                  <p className="text-sm text-gray-500 mb-2">
+                    Alternative simili
+                  </p>
+
+                  <h2 className="text-3xl font-bold text-[#0f3549]">
+                    Confronta altri noleggi
+                  </h2>
+                </div>
+
+              </div>
+
+              <div className="min-w-[900px]">
+
+                <div className="grid grid-cols-4 gap-4">
+
+                  <div></div>
+
+                  {[
+                    {
+                      name: selectedCar,
+                      image: currentCar?.image,
+                      monthly: rentalPrice,
+                      fuel: currentCar?.alimentazione || "Hybrid",
+                      delivery: "45 giorni",
+                      total: totalRental,
+                      selected: true,
+                    },
+
+                    ...similarCars.map((similarName) => ({
+                      name: similarName,
+
+                      image:
+                        carData[
+                          similarName as keyof typeof carData
+                        ]?.image || "",
+
+                      monthly:
+                        carData[
+                          similarName as keyof typeof carData
+                        ]?.noleggio || "€0",
+
+                      fuel:
+                        carData[
+                          similarName as keyof typeof carData
+                        ]?.alimentazione || "Benzina",
+
+                      delivery: "45 giorni",
+
+                      total:
+                        contractDuration === "48 mesi"
+                          ? `€${(
+                              parseInt(
+                                carData[
+                                  similarName as keyof typeof carData
+                                ]?.noleggio.replace(/[^\d]/g, "") || "0"
+                              ) * 48
+                            ).toLocaleString("it-IT")}`
+                          : `€${(
+                              parseInt(
+                                carData[
+                                  similarName as keyof typeof carData
+                                ]?.noleggio.replace(/[^\d]/g, "") || "0"
+                              ) * 36
+                            ).toLocaleString("it-IT")}`,
+
+                      selected: false,
+
+                      cheapest:
+                        parseInt(
+                          (
+                            carData[
+                              similarName as keyof typeof carData
+                            ]?.noleggio || "€0"
+                          ).replace(/[^\d]/g, "")
+                        ) <
+                        parseInt(
+                          rentalPrice.replace(/[^\d]/g, "")
+                        ),
+                    })),
+                  ].map((car: any, index) => (
+
+                    <div
+                      key={index}
+                      className={`
+                        rounded-[28px]
+                        border
+                        p-5
+                        transition-all
+                        duration-300
+                        ${
+                          car.selected
+                            ? "bg-[#0f3549] border-[#ffdc46] text-white shadow-[0_20px_50px_rgba(15,53,73,0.25)]"
+                            : "bg-[#f8fbfc] border-gray-200"
+                        }
+                      `}
+                    >
+
+                      <div className="aspect-[16/10] flex items-center justify-center mb-4">
+                    
+                        <img
+                          src={car.image}
+                          alt={car.name}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+
+                      <div className="flex flex-wrap gap-2 mb-4">
+
+                        {car.selected && (
+                          <div
+                            className="
+                              px-3
+                              py-1
+                              rounded-full
+                              text-xs
+                              font-bold
+                              bg-[#ffdc46]
+                              text-[#0f3549]
+                            "
+                          >
+                            ✓ Consigliata
+                          </div>
+                        )}
+
+                        {car.cheapest && (
+                          <div
+                            className="
+                              px-3
+                              py-1
+                              rounded-full
+                              text-xs
+                              font-bold
+                              bg-green-100
+                              text-green-700
+                            "
+                          >
+                            Più economica
+                          </div>
+                        )}
+
+                      </div>
+
+                      <h3 className={`text-xl font-bold ${car.selected ? "text-white" : "text-[#0f3549]"}`}>
+                        {car.name}
+                      </h3>
+
+                      <p className={`${car.selected ? "text-[#73d2d2]" : "text-gray-500"} mt-1`}>
+                        {car.monthly}/mese
+                      </p>
+
+                    </div>
+                  ))}
+
+                </div>
+
+                <div className="mt-5 space-y-4">
+
+                {[
+                  {
+                    label: "Canone mensile",
+                    values: [
+                      rentalPrice,
+
+                      ...similarCars.map(
+                        (similarName) =>
+                          carData[
+                            similarName as keyof typeof carData
+                          ]?.noleggio || "-"
+                      ),
+                    ],
+                  },
+
+                  {
+                    label: "Alimentazione",
+                    values: [
+                      currentCar?.alimentazione || "-",
+
+                      ...similarCars.map(
+                        (similarName) =>
+                          carData[
+                            similarName as keyof typeof carData
+                          ]?.alimentazione || "-"
+                      ),
+                    ],
+                  },
+
+                  {
+                    label: "Consegna prevista",
+                    values: [
+                      "45 giorni",
+
+                      ...similarCars.map(() => "45 giorni"),
+                    ],
+                  },
+
+                  {
+                    label: "Servizi inclusi",
+                    values: [
+                      "RCA • Kasko • Tagliandi",
+
+                      ...similarCars.map(
+                        () => "RCA • Kasko • Tagliandi"
+                      ),
+                    ],
+                  },
+
+                  {
+                    label: "Totale noleggio",
+                    values: [
+                      totalRental,
+
+                      ...similarCars.map((similarName) => {
+
+                        const monthly =
+                          carData[
+                            similarName as keyof typeof carData
+                          ]?.noleggio || "€0"
+
+                        const parsed =
+                          parseInt(
+                            monthly.replace(/[^\d]/g, "")
+                          ) || 0
+
+                        return contractDuration === "48 mesi"
+                          ? `€${(parsed * 48).toLocaleString("it-IT")}`
+                          : `€${(parsed * 36).toLocaleString("it-IT")}`
+                      }),
+                    ],
+                  },
+                ].map((row, index) => (
+
+                    <div
+                      key={index}
+                      className="grid grid-cols-4 gap-4"
+                    >
+
+                      <div className="flex items-center font-semibold text-[#0f3549]">
+                        {row.label}
+                      </div>
+
+                      {row.values.map((value, i) => (
+
+                        <div
+                          key={i}
+                          className={`
+                            rounded-2xl
+                            px-4
+                            py-4
+                            text-center
+                            font-medium
+                            ${
+                              i === 0
+                                ? "bg-[#0f3549] text-white border border-[#ffdc46]"
+                                : "bg-[#f8fbfc] text-[#0f3549] border border-gray-200"
+                            }
+                          `}
+                        >
+                          {value}
+                        </div>
+
+                      ))}
+
+                    </div>
+                  ))}
+
+                </div>
+
+              </div>
+
+            </div>
+
             <div className="mt-20 relative overflow-hidden bg-[#0f3549] text-white rounded-[40px] p-10 md:p-14 shadow-[0_30px_80px_rgba(15,53,73,0.25)]">
 
               <div className="absolute top-[-120px] right-[-120px] w-[340px] h-[340px] bg-[#73d2d2]/10 rounded-full blur-3xl"></div>
@@ -1320,6 +1620,8 @@ export default function Home() {
                       hover:scale-[1.02]
                       transition-all
                       duration-300
+                      hover:-translate-y-2
+                      hover:shadow-[0_25px_60px_rgba(15,53,73,0.18)]
                       shadow-xl
                     "
                   >
