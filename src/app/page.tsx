@@ -1,11 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function Home() {
+
+  useEffect(() => {
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40)
+    }
+  
+    window.addEventListener("scroll", handleScroll)
+  
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  
+  }, [])
+  
   const [showResults, setShowResults] = useState(false);
   const [showConfigurator, setShowConfigurator] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [selectedCar, setSelectedCar] = useState("")
   const [driverProfile, setDriverProfile] = useState("");
   const isNewDriver = driverProfile === "Neopatentato";
@@ -25,7 +41,7 @@ export default function Home() {
       alimentazione: "Hybrid", 
       simili: [
         "Kia Picanto",
-        "Toyota Yaris",
+        "Toyota Yaris Hybrid",
       ],
     },
   
@@ -42,7 +58,7 @@ export default function Home() {
       manutenzioneAnnua: 850,
       alimentazione: "Benzina/Diesel",
       simili: [
-        "Toyota Yaris",
+        "Toyota Yaris Hybrid",
         "Fiat 500 Hybrid Icon",
       ],
     },
@@ -115,7 +131,7 @@ export default function Home() {
       alimentazione: "Benzina",
       simili: [
         "Fiat 500 Hybrid Icon",
-        "Toyota Yaris",
+        "Toyota Yaris Hybrid",
       ],
     },
 
@@ -179,21 +195,24 @@ export default function Home() {
       <div className="fixed top-0 left-0 w-full z-[9999] px-4 pt-4">
 
       <nav
-        className="
+        className={`
           max-w-7xl
           mx-auto
           flex
           items-center
           justify-between
-          px-8
-          py-5
           rounded-[28px]
           border
           border-white/40
-          bg-white/80
           backdrop-blur-2xl
-          shadow-[0_10px_40px_rgba(15,53,73,0.08)]
-        "
+          transition-all
+          duration-500
+          ${
+            isScrolled
+              ? "px-6 py-3 bg-white/90 shadow-[0_15px_40px_rgba(15,53,73,0.12)]"
+              : "px-8 py-5 bg-white/80 shadow-[0_10px_40px_rgba(15,53,73,0.08)]"
+          }
+        `}
       >
 
         {/* LOGO */}
@@ -794,6 +813,12 @@ export default function Home() {
         )}
         
         {showResults && (
+
+          <div
+            className="
+              transition-all duration-500
+            "
+          >
         <>
 
           {isNewDriver && (
@@ -1208,7 +1233,7 @@ export default function Home() {
                               text-[#0f3549]
                             "
                           >
-                            ✓ Consigliata
+                            ✓ Selezionata
                           </div>
                         )}
 
@@ -1341,6 +1366,9 @@ export default function Home() {
                             ${
                               i === 0
                                 ? "bg-[#0f3549] text-white border border-[#ffdc46]"
+                                : value.toString().includes("€3") ||
+                                  value.toString().includes("€34")
+                                ? "bg-green-50 text-green-700 border border-green-200"
                                 : "bg-[#f8fbfc] text-[#0f3549] border border-gray-200"
                             }
                           `}
@@ -1645,6 +1673,7 @@ export default function Home() {
             </div>
 
           </>
+          </div>
         )}
 
       </div>
