@@ -1,23 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --brand-dark: #0f3549;
-  --brand-teal: #73d2d2;
+  /* Brand */
+  --brand:        #0f3549;
+  --brand-light:  #73d2d2;
   --brand-yellow: #ffdc46;
-  --text-primary: #0A0A0A;
+
+  /* Surfaces */
+  --bg:       #ffffff;
+  --bg-alt:   #F7F8FA;
+  --surface:  #ffffff;
+
+  /* Text */
+  --text-primary:   #0A0A0A;
   --text-secondary: #6B7280;
-  --border: #E5E7EB;
-  --bg-alt: #F8F9FA;
+
+  /* Borders */
+  --border:        #E5E7EB;
+  --border-active: #0f3549;
 }
 
 @theme inline {
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-geist-sans);
+  --font-sans:    var(--font-dm-sans);
+  --font-display: var(--font-space-grotesk);
 }
 
 body {
-  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
   color: var(--text-primary);
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -28,6 +39,18 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
   letter-spacing: -0.02em;
+}
+
+/* Tabular nums for all price/number elements */
+.price {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Focus ring — teal */
+*:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
 }

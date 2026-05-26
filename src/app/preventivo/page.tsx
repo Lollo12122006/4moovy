@@ -29,22 +29,38 @@ const pricingData: Record<string, { basePrice: number; delivery: string }> = {
 
 const services = [
   {
-    emoji: "🛡️",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.955 11.955 0 003 12c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+      </svg>
+    ),
     title: "Assicurazione RCA",
     description: "Copertura completa inclusa nel canone mensile. Zero sorprese.",
   },
   {
-    emoji: "🔧",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
+      </svg>
+    ),
     title: "Manutenzione",
     description: "Tagliandi, filtri e ricambi coperti per tutta la durata.",
   },
   {
-    emoji: "🚘",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+      </svg>
+    ),
     title: "Soccorso stradale",
     description: "Assistenza 24/7 in tutta Europa inclusa nel contratto.",
   },
   {
-    emoji: "⚡",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+      </svg>
+    ),
     title: "Gestione imprevisti",
     description: "Auto sostitutiva e furto/incendio coperti senza extra.",
   },
@@ -123,98 +139,96 @@ function PreventivoContent() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative overflow-hidden px-5 md:px-10 pt-36 pb-20">
-        <div className="absolute top-[-200px] right-[-200px] w-[500px] h-[500px] bg-[#73d2d2]/15 blur-3xl rounded-full pointer-events-none" />
-
+      <section className="px-5 md:px-10 pt-32 pb-20 border-b border-[#E5E7EB]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <div>
-              <span className="inline-flex items-center rounded-full border border-[#73d2d2] bg-[#73d2d2]/10 px-4 py-2 text-sm font-medium text-[#0f3549] mb-6">
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f3549] mb-4">
                 Noleggio lungo termine
-              </span>
+              </p>
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] text-[#0f3549]">
-                Preventivo
-                <span className="text-[#ffdc46]"> {selectedCar}</span>
+              <h1
+                className="font-semibold text-[#0A0A0A] leading-tight mb-5"
+                style={{ fontSize: "clamp(2.4rem, 4.5vw, 3.5rem)" }}
+              >
+                Preventivo{" "}
+                <span className="text-[#0f3549]">{selectedCar}</span>
               </h1>
 
-              <p className="mt-7 text-lg text-gray-500 leading-relaxed max-w-xl">
+              <p className="text-base text-[#6B7280] leading-relaxed max-w-lg mb-8">
                 Scopri la soluzione più adatta alle tue esigenze con costi
                 trasparenti e un preventivo personalizzato in 60 secondi.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="/">
-                  <button className="border border-[#0f3549] text-[#0f3549] px-6 py-3 rounded-2xl font-semibold text-sm hover:bg-[#0f3549] hover:text-white transition-all duration-300">
-                    ← Torna al confronto
-                  </button>
+              <div className="flex flex-wrap gap-3 mb-10">
+                <Link
+                  href="/"
+                  className="inline-flex items-center gap-1.5 border border-[#E5E7EB] text-[#6B7280] px-5 py-2.5 rounded-lg text-sm font-medium hover:border-[#0f3549] hover:text-[#0f3549] transition-all duration-200"
+                >
+                  ← Torna al confronto
                 </Link>
                 <button
                   onClick={scrollToForm}
-                  className="bg-[#ffdc46] text-[#0f3549] px-6 py-3 rounded-2xl font-bold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                  className="bg-[#0f3549] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#1a4d66] transition-all duration-200"
                 >
                   Richiedi preventivo
                 </button>
               </div>
 
-              <div className="mt-10 flex flex-wrap gap-4">
-                <div className="bg-[#F8F9FA] border border-[#E5E7EB] rounded-2xl px-5 py-4 shadow-sm">
-                  <p className="text-xs text-gray-400 font-medium mb-1">Anticipo</p>
-                  <p className="text-base font-bold text-[#0f3549]">Personalizzabile</p>
-                </div>
-                <div className="bg-[#F8F9FA] border border-[#E5E7EB] rounded-2xl px-5 py-4 shadow-sm">
-                  <p className="text-xs text-gray-400 font-medium mb-1">Consegna</p>
-                  <p className="text-base font-bold text-[#0f3549]">{delivery}</p>
-                </div>
-                <div className="bg-[#F8F9FA] border border-[#E5E7EB] rounded-2xl px-5 py-4 shadow-sm">
-                  <p className="text-xs text-gray-400 font-medium mb-1">Servizi inclusi</p>
-                  <p className="text-base font-bold text-[#0f3549]">RCA + Assistenza</p>
-                </div>
+              <div className="flex flex-wrap gap-3">
+                {[
+                  { label: "Anticipo", value: "Personalizzabile" },
+                  { label: "Consegna", value: delivery },
+                  { label: "Servizi inclusi", value: "RCA + Assistenza" },
+                ].map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="bg-white border border-[#E5E7EB] rounded-xl px-4 py-3"
+                  >
+                    <p className="text-xs text-[#6B7280] mb-1">{stat.label}</p>
+                    <p className="text-sm font-semibold text-[#0A0A0A]">{stat.value}</p>
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div className="relative flex justify-center">
-              <div className="absolute w-[380px] h-[380px] bg-[#73d2d2]/15 blur-3xl rounded-full pointer-events-none" />
-              <div className="relative z-10 w-full max-w-[600px] aspect-[4/3]">
-                <Image
-                  src={currentImage}
-                  alt={`${selectedCar} — Preventivo noleggio`}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-contain drop-shadow-[0_30px_60px_rgba(15,53,73,0.18)]"
-                />
-              </div>
+            <div className="relative w-full max-w-[560px] mx-auto aspect-[4/3]">
+              <Image
+                src={currentImage}
+                alt={`${selectedCar} — Preventivo noleggio`}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-contain"
+              />
             </div>
           </div>
         </div>
       </section>
 
       {/* Services */}
-      <section className="px-5 md:px-10 py-20" style={{ backgroundColor: "var(--bg-alt)" }}>
+      <section className="px-5 md:px-10 py-20 border-b border-[#E5E7EB]" style={{ backgroundColor: "var(--bg-alt)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="mb-12">
-            <p className="text-xs uppercase tracking-[0.2em] text-[#73d2d2] font-semibold mb-3">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#0f3549] mb-3">
               Servizi inclusi
             </p>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#0f3549]">
-              Tutto incluso.
-              <br />
-              Zero pensieri.
+            <h2 className="text-3xl md:text-4xl font-semibold text-[#0A0A0A] max-w-md leading-tight">
+              Tutto incluso. Zero pensieri.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
             {services.map((service) => (
               <div
                 key={service.title}
-                className="bg-white rounded-[28px] border border-[#E5E7EB] p-8 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300"
+                className="bg-white border border-[#E5E7EB] rounded-xl p-6 hover:border-[#0f3549] hover:shadow-sm transition-all duration-200"
               >
-                <div className="w-13 h-13 rounded-2xl bg-[#73d2d2]/10 mb-6 flex items-center justify-center w-12 h-12">
-                  <span className="text-2xl">{service.emoji}</span>
+                <div className="w-9 h-9 rounded-lg bg-[#0f3549]/8 flex items-center justify-center text-[#0f3549] mb-5">
+                  {service.icon}
                 </div>
-                <h3 className="text-lg font-bold text-[#0f3549] mb-3">{service.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{service.description}</p>
+                <h3 className="font-semibold text-[#0A0A0A] mb-2 text-[15px]">{service.title}</h3>
+                <p className="text-sm text-[#6B7280] leading-relaxed">{service.description}</p>
               </div>
             ))}
           </div>
@@ -222,21 +236,21 @@ function PreventivoContent() {
       </section>
 
       {/* Configurator */}
-      <section className="px-5 md:px-10 py-20">
+      <section className="px-5 md:px-10 py-20 border-b border-[#E5E7EB]">
         <div className="max-w-7xl mx-auto">
           <div className="mb-10">
-            <p className="text-xs uppercase tracking-[0.2em] text-[#73d2d2] font-semibold mb-3">
-              Configura il tuo preventivo
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#0f3549] mb-3">
+              Configura
             </p>
-            <h2 className="text-4xl font-bold text-[#0f3549]">
+            <h2 className="text-3xl md:text-4xl font-semibold text-[#0A0A0A] leading-tight">
               Personalizza il noleggio
             </h2>
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
             {/* Config options */}
-            <div className="bg-[#F8F9FA] border border-[#E5E7EB] rounded-[40px] p-8 shadow-sm">
-              <div className="space-y-8">
+            <div className="bg-white border border-[#E5E7EB] rounded-xl p-7">
+              <div className="space-y-7">
                 {[
                   {
                     label: "Durata contratto",
@@ -258,18 +272,18 @@ function PreventivoContent() {
                   },
                 ].map((group) => (
                   <div key={group.label}>
-                    <p className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-[#6B7280] mb-3">
                       {group.label}
                     </p>
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-3 gap-2">
                       {group.options.map((opt) => (
                         <button
                           key={opt}
                           onClick={() => group.setter(opt)}
-                          className={`rounded-2xl py-4 font-semibold text-sm transition-all duration-300 border ${
+                          className={`rounded-lg py-3 font-medium text-sm transition-all duration-200 border ${
                             group.value === opt
-                              ? "bg-[#0f3549] text-white border-[#0f3549] shadow-md"
-                              : "bg-white text-[#0f3549] border-[#E5E7EB] hover:border-[#0f3549]/30"
+                              ? "bg-[#0f3549] text-white border-[#0f3549]"
+                              : "bg-white text-[#6B7280] border-[#E5E7EB] hover:border-[#0f3549] hover:text-[#0f3549]"
                           }`}
                         >
                           {opt}
@@ -282,120 +296,90 @@ function PreventivoContent() {
             </div>
 
             {/* Quote summary */}
-            <div className="sticky top-28 relative overflow-hidden rounded-[40px] bg-[#0f3549] p-8 md:p-10 text-white shadow-[0_30px_80px_rgba(15,53,73,0.25)]">
-              <div className="absolute top-[-100px] right-[-100px] w-[260px] h-[260px] bg-[#73d2d2]/20 blur-3xl rounded-full pointer-events-none" />
+            <div className="sticky top-28 rounded-xl bg-[#0f3549] p-7 text-white">
+              <p className="text-xs font-semibold uppercase tracking-widest text-white/50 mb-2">
+                Preventivo stimato
+              </p>
+              <span className="inline-flex items-center bg-[#ffdc46] text-[#0f3549] px-2.5 py-0.5 rounded-md text-xs font-semibold mb-6">
+                Offerta consigliata
+              </span>
 
-              <div className="relative">
-                <p className="text-[#73d2d2] text-xs uppercase tracking-[0.2em] font-semibold mb-2">
-                  Preventivo stimato
-                </p>
-                <div className="inline-flex items-center rounded-full bg-[#ffdc46] text-[#0f3549] px-4 py-1.5 text-xs font-bold mb-6">
-                  Offerta consigliata
+              <div className="mb-7">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-5xl font-bold price">€{finalPrice}</span>
+                  <span className="text-base text-white/50 font-normal">/mese</span>
                 </div>
-
-                <div className="mb-8">
-                  <h2 className="text-5xl font-bold tracking-tight">
-                    €{finalPrice}
-                    <span className="text-xl text-gray-400 font-normal">/mese</span>
-                  </h2>
-                </div>
-
-                <div className="space-y-4 mb-8 border-t border-white/10 pt-6">
-                  {[
-                    { label: "Durata", value: duration },
-                    { label: "Chilometri inclusi", value: `${annualKm}/Anno` },
-                    { label: "Anticipo", value: upfront },
-                    {
-                      label: "Totale contratto",
-                      value: `€${totalContract.toLocaleString("it-IT")}`,
-                    },
-                    { label: "Consegna prevista", value: delivery },
-                  ].map((row) => (
-                    <div
-                      key={row.label}
-                      className="flex items-center justify-between pb-4 border-b border-white/10 last:border-0 last:pb-0"
-                    >
-                      <span className="text-gray-400 text-sm">{row.label}</span>
-                      <span className="font-semibold text-sm">{row.value}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="bg-white rounded-[24px] text-[#0f3549] p-5 mb-6">
-                  <p className="text-xs uppercase tracking-[0.15em] text-[#73d2d2] font-semibold mb-4">
-                    Analisi convenienza
-                  </p>
-                  <div className="space-y-3 text-sm">
-                    {[
-                      { label: "Gestione semplificata", value: "Inclusa" },
-                      { label: "Costi prevedibili", value: "✓", green: true },
-                      { label: "Rischio svalutazione", value: "Evitato", yellow: true },
-                    ].map((row) => (
-                      <div key={row.label} className="flex items-center justify-between">
-                        <span className="text-gray-500">{row.label}</span>
-                        <span
-                          className={`font-bold ${
-                            row.green ? "text-green-600" : row.yellow ? "text-[#0f3549]" : ""
-                          }`}
-                        >
-                          {row.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 bg-[#F8F9FA] rounded-2xl p-4">
-                    <p className="text-xs text-gray-400 mb-1">Servizi inclusi</p>
-                    <div className="grid grid-cols-2 gap-1.5 text-xs font-medium text-[#0f3549]">
-                      {["✓ RCA", "✓ Assistenza", "✓ Manutenzione", "✓ Furto e incendio"].map(
-                        (s) => <span key={s}>{s}</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <button
-                  onClick={scrollToForm}
-                  className="w-full bg-[#ffdc46] text-[#0f3549] py-4 rounded-2xl text-base font-bold hover:scale-[1.01] hover:shadow-[0_10px_30px_rgba(255,220,70,0.4)] transition-all duration-300"
-                >
-                  Richiedi questa offerta →
-                </button>
-
-                <p className="text-xs text-gray-500 text-center leading-relaxed mt-4">
-                  Il preventivo è indicativo. Disponibilità, tempi e canone possono
-                  variare in base alle condizioni contrattuali.
-                </p>
               </div>
+
+              <div className="space-y-3 mb-7 border-t border-white/10 pt-6">
+                {[
+                  { label: "Durata", value: duration },
+                  { label: "Chilometri inclusi", value: `${annualKm}/Anno` },
+                  { label: "Anticipo", value: upfront },
+                  {
+                    label: "Totale contratto",
+                    value: `€${totalContract.toLocaleString("it-IT")}`,
+                  },
+                  { label: "Consegna prevista", value: delivery },
+                ].map((row) => (
+                  <div
+                    key={row.label}
+                    className="flex items-center justify-between pb-3 border-b border-white/10 last:border-0 last:pb-0"
+                  >
+                    <span className="text-white/50 text-sm">{row.label}</span>
+                    <span className="font-semibold text-sm price">{row.value}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-white rounded-xl text-[#0A0A0A] p-5 mb-5">
+                <p className="text-xs font-semibold uppercase tracking-widest text-[#6B7280] mb-4">
+                  Servizi inclusi
+                </p>
+                <div className="grid grid-cols-2 gap-1.5 text-xs font-medium text-[#0f3549]">
+                  {["✓ RCA", "✓ Assistenza", "✓ Manutenzione", "✓ Furto/Incendio"].map(
+                    (s) => <span key={s}>{s}</span>
+                  )}
+                </div>
+              </div>
+
+              <button
+                onClick={scrollToForm}
+                className="w-full bg-[#ffdc46] text-[#0f3549] py-3 rounded-lg text-sm font-semibold hover:bg-[#ffe870] transition-all duration-200"
+              >
+                Richiedi questa offerta →
+              </button>
+
+              <p className="text-xs text-white/40 text-center leading-relaxed mt-4">
+                Il preventivo è indicativo. Disponibilità e canone possono variare.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="px-5 md:px-10 py-20" style={{ backgroundColor: "var(--bg-alt)" }}>
+      <section id="faq" className="px-5 md:px-10 py-20 border-b border-[#E5E7EB]" style={{ backgroundColor: "var(--bg-alt)" }}>
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-14">
-            <p className="text-xs uppercase tracking-[0.2em] text-[#73d2d2] font-semibold mb-4">
+          <div className="mb-12">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#0f3549] mb-3">
               FAQ
             </p>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#0f3549] mb-5">
+            <h2 className="text-3xl md:text-4xl font-semibold text-[#0A0A0A] leading-tight">
               Domande frequenti
             </h2>
-            <p className="text-gray-500 text-base max-w-xl mx-auto">
-              Tutto quello che devi sapere sul noleggio lungo termine.
-            </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqs.map((faq) => (
               <div
                 key={faq.question}
-                className="bg-white rounded-[24px] border border-[#E5E7EB] p-7 shadow-sm"
+                className="bg-white border border-[#E5E7EB] rounded-xl p-6 hover:border-[#0f3549] transition-all duration-200"
               >
-                <h3 className="text-lg font-bold text-[#0f3549] mb-3">
+                <h3 className="font-semibold text-[#0A0A0A] mb-2 text-[15px]">
                   {faq.question}
                 </h3>
-                <p className="text-gray-500 leading-relaxed text-sm">{faq.answer}</p>
+                <p className="text-sm text-[#6B7280] leading-relaxed">{faq.answer}</p>
               </div>
             ))}
           </div>
@@ -405,124 +389,119 @@ function PreventivoContent() {
       {/* Contact Form */}
       <section id="contatti" className="px-5 md:px-10 py-20">
         <div className="max-w-3xl mx-auto">
-          <div className="relative overflow-hidden bg-[#0f3549] rounded-[40px] p-10 md:p-14 text-white shadow-[0_30px_80px_rgba(15,53,73,0.20)]">
-            <div className="absolute top-[-100px] right-[-100px] w-[280px] h-[280px] bg-[#73d2d2]/15 blur-3xl rounded-full pointer-events-none" />
-            <div className="absolute bottom-[-120px] left-[-100px] w-[240px] h-[240px] bg-[#ffdc46]/8 blur-3xl rounded-full pointer-events-none" />
-
-            <div className="relative z-10">
-              {formSent ? (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 rounded-full bg-[#ffdc46] flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-8 h-8 text-[#0f3549]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h2 className="text-3xl font-bold mb-4">Richiesta inviata!</h2>
-                  <p className="text-gray-300 text-base leading-relaxed max-w-md mx-auto">
-                    Abbiamo ricevuto la tua richiesta. Ti risponderemo entro 24 ore
-                    con un&apos;offerta personalizzata.
-                  </p>
-                  <div className="mt-8 bg-white/10 rounded-2xl p-5 text-left space-y-2 text-sm">
-                    <p className="text-gray-300">
-                      <span className="font-semibold text-white">Veicolo:</span> {selectedCar}
-                    </p>
-                    <p className="text-gray-300">
-                      <span className="font-semibold text-white">Canone stimato:</span> €{finalPrice}/mese
-                    </p>
-                    <p className="text-gray-300">
-                      <span className="font-semibold text-white">Durata:</span> {duration}
-                    </p>
-                  </div>
+          <div className="rounded-xl bg-[#0f3549] p-8 md:p-12 text-white">
+            {formSent ? (
+              <div className="text-center py-8">
+                <div className="w-12 h-12 rounded-full bg-[#ffdc46] flex items-center justify-center mx-auto mb-5">
+                  <svg className="w-6 h-6 text-[#0f3549]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
                 </div>
-              ) : (
-                <>
-                  <p className="text-[#73d2d2] text-xs uppercase tracking-[0.2em] font-semibold mb-4">
-                    Blocca l&apos;offerta
+                <h2 className="text-2xl font-semibold mb-3">Richiesta inviata!</h2>
+                <p className="text-white/60 text-sm leading-relaxed max-w-md mx-auto mb-7">
+                  Abbiamo ricevuto la tua richiesta. Ti risponderemo entro 24 ore
+                  con un&apos;offerta personalizzata.
+                </p>
+                <div className="bg-white/10 rounded-xl p-5 text-left space-y-2 text-sm">
+                  <p className="text-white/60">
+                    <span className="font-semibold text-white">Veicolo:</span> {selectedCar}
                   </p>
-                  <h2 className="text-4xl font-bold leading-tight mb-3">
-                    Vuoi questa offerta?
-                  </h2>
-                  <p className="text-gray-300 text-base mb-8">
-                    Lascia i tuoi dati e ti ricontatteremo entro 24 ore con la
-                    proposta definitiva per{" "}
-                    <span className="text-[#ffdc46] font-semibold">{selectedCar}</span>.
+                  <p className="text-white/60">
+                    <span className="font-semibold text-white">Canone stimato:</span> €{finalPrice}/mese
                   </p>
+                  <p className="text-white/60">
+                    <span className="font-semibold text-white">Durata:</span> {duration}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <p className="text-xs font-semibold uppercase tracking-widest text-white/50 mb-3">
+                  Blocca l&apos;offerta
+                </p>
+                <h2 className="text-2xl md:text-3xl font-semibold leading-tight mb-3">
+                  Vuoi questa offerta?
+                </h2>
+                <p className="text-white/60 text-sm mb-7">
+                  Lascia i tuoi dati e ti ricontatteremo entro 24 ore con la
+                  proposta definitiva per{" "}
+                  <span className="text-[#ffdc46] font-semibold">{selectedCar}</span>.
+                </p>
 
-                  <div className="bg-white/10 rounded-2xl p-4 mb-8 flex flex-wrap gap-4 text-sm">
-                    <span>
-                      <span className="text-gray-400">Canone: </span>
-                      <span className="font-bold">€{finalPrice}/mese</span>
-                    </span>
-                    <span>
-                      <span className="text-gray-400">Durata: </span>
-                      <span className="font-bold">{duration}</span>
-                    </span>
-                    <span>
-                      <span className="text-gray-400">Km: </span>
-                      <span className="font-bold">{annualKm}/anno</span>
-                    </span>
-                    <span>
-                      <span className="text-gray-400">Totale: </span>
-                      <span className="font-bold">€{totalContract.toLocaleString("it-IT")}</span>
-                    </span>
-                  </div>
+                <div className="bg-white/10 rounded-xl p-4 mb-7 flex flex-wrap gap-4 text-sm">
+                  <span>
+                    <span className="text-white/50">Canone: </span>
+                    <span className="font-semibold price">€{finalPrice}/mese</span>
+                  </span>
+                  <span>
+                    <span className="text-white/50">Durata: </span>
+                    <span className="font-semibold">{duration}</span>
+                  </span>
+                  <span>
+                    <span className="text-white/50">Km: </span>
+                    <span className="font-semibold">{annualKm}/anno</span>
+                  </span>
+                  <span>
+                    <span className="text-white/50">Totale: </span>
+                    <span className="font-semibold price">€{totalContract.toLocaleString("it-IT")}</span>
+                  </span>
+                </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wide">
-                          Nome e cognome *
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          placeholder="Mario Rossi"
-                          className="w-full bg-white/10 border border-white/20 rounded-2xl px-4 py-3.5 text-white placeholder-gray-400 text-sm focus:outline-none focus:border-[#73d2d2] focus:bg-white/15 transition-all duration-200"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wide">
-                          Telefono *
-                        </label>
-                        <input
-                          type="tel"
-                          required
-                          value={formData.phone}
-                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                          placeholder="+39 333 1234567"
-                          className="w-full bg-white/10 border border-white/20 rounded-2xl px-4 py-3.5 text-white placeholder-gray-400 text-sm focus:outline-none focus:border-[#73d2d2] focus:bg-white/15 transition-all duration-200"
-                        />
-                      </div>
-                    </div>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wide">
-                        Email *
+                      <label className="block text-xs font-semibold uppercase tracking-widest text-white/50 mb-2">
+                        Nome e cognome *
                       </label>
                       <input
-                        type="email"
+                        type="text"
                         required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="mario@email.it"
-                        className="w-full bg-white/10 border border-white/20 rounded-2xl px-4 py-3.5 text-white placeholder-gray-400 text-sm focus:outline-none focus:border-[#73d2d2] focus:bg-white/15 transition-all duration-200"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        placeholder="Mario Rossi"
+                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-white/50 transition-all duration-200"
                       />
                     </div>
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-widest text-white/50 mb-2">
+                        Telefono *
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        placeholder="+39 333 1234567"
+                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-white/50 transition-all duration-200"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-widest text-white/50 mb-2">
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="mario@email.it"
+                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-white/50 transition-all duration-200"
+                    />
+                  </div>
 
-                    <button
-                      type="submit"
-                      className="w-full bg-[#ffdc46] text-[#0f3549] py-4 rounded-2xl text-base font-bold hover:scale-[1.01] hover:shadow-[0_10px_30px_rgba(255,220,70,0.4)] transition-all duration-300 mt-2"
-                    >
-                      Invia richiesta preventivo
-                    </button>
-                    <p className="text-xs text-gray-500 text-center">
-                      I tuoi dati non saranno condivisi con terze parti. Risposta garantita entro 24h.
-                    </p>
-                  </form>
-                </>
-              )}
-            </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-[#ffdc46] text-[#0f3549] py-3 rounded-lg text-sm font-semibold hover:bg-[#ffe870] transition-all duration-200 mt-1"
+                  >
+                    Invia richiesta preventivo
+                  </button>
+                  <p className="text-xs text-white/30 text-center">
+                    I tuoi dati non saranno condivisi con terze parti. Risposta garantita entro 24h.
+                  </p>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -537,7 +516,7 @@ export default function PreventivoPage() {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center">
-          <div className="w-8 h-8 border-4 border-[#0f3549] border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-[#0f3549] border-t-transparent rounded-full animate-spin" />
         </div>
       }
     >

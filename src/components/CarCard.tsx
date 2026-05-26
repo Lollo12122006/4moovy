@@ -25,79 +25,77 @@ export default function CarCard({
     <button
       type="button"
       onClick={onSelect}
-      className={`group relative overflow-hidden rounded-[32px] border p-6 text-left transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_30px_70px_rgba(15,53,73,0.18)] ${
+      className={`group relative text-left rounded-2xl border bg-white transition-all duration-200 overflow-hidden ${
         isSelected
-          ? "border-[#ffdc46] bg-[#0f3549] shadow-[0_20px_60px_rgba(15,53,73,0.28)] scale-[1.01]"
-          : "border-[#E5E7EB] bg-[#0f3549] hover:border-[#73d2d2]/40"
+          ? "border-[#0f3549] shadow-md ring-1 ring-[#0f3549]"
+          : "border-[#E5E7EB] hover:border-[#0f3549] hover:shadow-md"
       }`}
     >
-      <div className="relative aspect-[16/9] rounded-2xl overflow-hidden bg-gradient-to-br from-white to-[#eef7f7] border border-white/20 mb-6">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(115,210,210,0.08),transparent_70%)]" />
+      {/* Image area */}
+      <div className="relative aspect-[4/3] bg-[#F7F8FA] overflow-hidden">
         <Image
           src={image}
           alt={name}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-          className="object-contain transition-transform duration-700 group-hover:scale-[1.08]"
+          className="object-contain p-6 transition-transform duration-300 group-hover:scale-[1.04]"
         />
-      </div>
-
-      <div className="inline-flex items-center gap-1.5 rounded-full bg-green-50/90 border border-green-200 px-3 py-1 text-xs font-semibold text-green-700 mb-4">
-        <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-        Disponibile
-      </div>
-
-      <h3 className="text-xl font-bold text-white leading-tight">{name}</h3>
-      <p className="text-[#73d2d2] text-sm mt-1">
-        {alimentazione} · Noleggio lungo termine
-      </p>
-
-      <div className="mt-4 flex items-end gap-1">
-        <span className="text-4xl font-bold text-white">{price}</span>
-        <span className="text-gray-400 mb-1 text-sm">/mese</span>
-      </div>
-
-      {isSelected && (
-        <div className="absolute top-5 right-5 z-20">
-          <div className="w-9 h-9 rounded-full bg-[#ffdc46] flex items-center justify-center shadow-lg">
+        {/* Selected badge */}
+        {isSelected && (
+          <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-[#0f3549] text-white px-2.5 py-1 rounded-md text-xs font-semibold">
             <svg
-              className="w-4 h-4 text-[#0f3549]"
+              className="w-3 h-3"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
               strokeWidth={3}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 13l4 4L19 7"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
+            Selezionata
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      <div className="mt-5">
+      {/* Content */}
+      <div className="p-5">
+        {/* Fuel badge */}
+        <span className="inline-block text-xs font-medium text-[#6B7280] bg-[#F7F8FA] border border-[#E5E7EB] px-2 py-0.5 rounded-md mb-3">
+          {alimentazione}
+        </span>
+
+        <h3 className="font-semibold text-[#0A0A0A] text-[15px] leading-tight mb-3">
+          {name}
+        </h3>
+
+        <div className="flex items-baseline gap-1 mb-4">
+          <span className="text-2xl font-bold text-[#0f3549] price">{price}</span>
+          <span className="text-sm text-[#6B7280]">/mese</span>
+        </div>
+
+        {/* CTA row */}
         {isSelected ? (
-          <div className="space-y-3">
-            <div className="flex items-center justify-center gap-2 rounded-full bg-[#ffdc46] text-[#0f3549] px-4 py-2 text-sm font-bold">
-              ✓ Selezionata
-            </div>
+          <div className="space-y-2">
             {!showConfigurator && (
               <div
                 onClick={onConfigure}
-                className="w-full rounded-2xl py-3 text-center font-semibold bg-white text-[#0f3549] hover:bg-gray-100 transition-colors cursor-pointer text-sm"
+                className="w-full text-center bg-[#0f3549] text-white text-sm font-medium py-2.5 rounded-lg hover:bg-[#1a4d66] transition-colors duration-200 cursor-pointer"
               >
                 Vai al confronto →
               </div>
             )}
           </div>
         ) : (
-          <div className="w-full rounded-2xl py-3 text-center font-semibold bg-white/10 text-white text-sm border border-white/10 group-hover:bg-white group-hover:text-[#0f3549] transition-all duration-300">
-            Seleziona e confronta
+          <div className="w-full text-center border border-[#E5E7EB] text-[#6B7280] text-sm font-medium py-2.5 rounded-lg group-hover:border-[#0f3549] group-hover:text-[#0f3549] transition-colors duration-200">
+            Seleziona
           </div>
         )}
       </div>
+
+      {/* Selected left border accent */}
+      {isSelected && (
+        <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#0f3549]" />
+      )}
     </button>
   );
 }

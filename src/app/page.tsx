@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import CarCard from "@/components/CarCard";
 import FeatureGrid from "@/components/FeatureGrid";
 
+/* ─── DATA ──────────────────────────────────────────────── */
 const carData = {
   "Fiat 500 Hybrid Icon": {
     image: "/cars/fiat500.jpg",
@@ -109,6 +110,16 @@ const carData = {
   },
 };
 
+/* ─── HELPERS ────────────────────────────────────────────── */
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+  );
+}
+
+/* ─── PAGE ───────────────────────────────────────────────── */
 export default function Home() {
   const [showResults, setShowResults] = useState(false);
   const [showConfigurator, setShowConfigurator] = useState(false);
@@ -116,9 +127,10 @@ export default function Home() {
   const [driverProfile, setDriverProfile] = useState("");
   const [contractDuration, setContractDuration] = useState("");
 
+  /* ── Derived ── */
   const isNewDriver = driverProfile === "Neopatentato";
-  const currentCar = carData[selectedCar as keyof typeof carData] || null;
-  const similarCars = currentCar?.simili || ["Fiat 500 Hybrid Icon", "Toyota Yaris Hybrid"];
+  const currentCar = carData[selectedCar as keyof typeof carData] ?? null;
+  const similarCars = currentCar?.simili ?? ["Fiat 500 Hybrid Icon", "Toyota Yaris Hybrid"];
   const is36Months = contractDuration === "36 mesi";
 
   const insuranceCost = isNewDriver ? "€1.400/anno" : currentCar?.assicurazione;
@@ -132,22 +144,20 @@ export default function Home() {
     : currentCar?.totaleNoleggio ?? "€0";
 
   const durationYears = is36Months ? 3 : 4;
-
-  const insuranceTotal = isNewDriver
-    ? 1400 * durationYears
-    : (currentCar?.assicurazioneAnnua ?? 0) * durationYears;
-
+  const insuranceTotal = isNewDriver ? 1400 * durationYears : (currentCar?.assicurazioneAnnua ?? 0) * durationYears;
   const maintenanceTotal = (currentCar?.manutenzioneAnnua ?? 0) * durationYears;
-
   const totalOwnershipCost =
     parseInt(currentCar?.prezzoAuto.replace(/[^\d]/g, "") ?? "0") +
     insuranceTotal +
     maintenanceTotal;
 
+  /* ── Handlers ── */
   const handleSelectCar = (name: string) => {
-    setSelectedCar((prev) => (prev === name ? "" : name));
     if (selectedCar === name) {
+      setSelectedCar("");
       setShowConfigurator(false);
+    } else {
+      setSelectedCar(name);
     }
   };
 
@@ -179,100 +189,169 @@ export default function Home() {
     if (!selectedCar) setShowConfigurator(false);
   }, [selectedCar]);
 
+  /* ── Comparison cars (for the similar-cars table) ── */
+  const comparisonCars = [
+    {
+      name: selectedCar,
+      image: currentCar?.image ?? "",
+      monthly: rentalPrice,
+      fuel: currentCar?.alimentazione ?? "",
+      total: totalRental,
+      isSelected: true,
+      isCheaper: false,
+    },
+    ...similarCars.map((n) => {
+      const d = carData[n as keyof typeof carData];
+      const m = parseInt(d?.noleggio.replace(/[^\d]/g, "") ?? "0");
+      return {
+        name: n,
+        image: d?.image ?? "",
+        monthly: d?.noleggio ?? "€0",
+        fuel: d?.alimentazione ?? "",
+        total: is36Months
+          ? `€${(m * 36).toLocaleString("it-IT")}`
+          : `€${(m * 48).toLocaleString("it-IT")}`,
+        isSelected: false,
+        isCheaper: m < parseInt(rentalPrice.replace(/[^\d]/g, "")),
+      };
+    }),
+  ];
+
+  const comparisonRows = [
+    { label: "Canone mensile", values: comparisonCars.map((c) => c.monthly) },
+    { label: "Alimentazione",  values: comparisonCars.map((c) => c.fuel) },
+    { label: "Servizi inclusi", values: comparisonCars.map(() => "RCA · Kasko · Tagliandi") },
+    { label: "Totale noleggio", values: comparisonCars.map((c) => c.total) },
+  ];
+
+  /* ── Reusable micro components ── */
+  const StepLabel = ({ n, title, subtitle }: { n: string; title: string; subtitle: string }) => (
+    <div className="flex items-start gap-4 mb-8">
+      <div className="w-8 h-8 rounded-lg bg-[#0f3549] text-white flex items-center justify-center text-sm font-semibold shrink-0 mt-0.5">
+        {n}
+      </div>
+      <div>
+        <h2 className="text-xl font-semibold text-[#0A0A0A]">{title}</h2>
+        <p className="text-sm text-[#6B7280] mt-0.5">{subtitle}</p>
+      </div>
+    </div>
+  );
+
+  const ToggleGroup = ({
+    label,
+    options,
+    value,
+    onChange,
+  }: {
+    label: string;
+    options: string[];
+    value: string;
+    onChange: (v: string) => void;
+  }) => (
+    <div>
+      <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-3">{label}</p>
+      <div className="flex flex-wrap gap-2">
+        {options.map((opt) => (
+          <button
+            key={opt}
+            type="button"
+            onClick={() => onChange(opt)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200 ${
+              value === opt
+                ? "bg-[#0f3549] text-white border-[#0f3549]"
+                : "bg-white text-[#0A0A0A] border-[#E5E7EB] hover:border-[#0f3549] hover:text-[#0f3549]"
+            }`}
+          >
+            {opt}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  /* ════════════════════════════════════════════════════════ */
   return (
     <main className="min-h-screen">
       <Navbar />
 
+      {/* ── PRE-RESULTS ─────────────────────────────────── */}
       {!showResults && (
         <>
-          <div className="pt-32 px-5 md:px-10">
-            {/* Hero */}
-            <div className="relative overflow-hidden rounded-[40px] bg-gradient-to-br from-[#f8fbfc] to-[#eef7f7] border border-[#E5E7EB] mb-12">
-              <div className="absolute inset-0 opacity-30 pointer-events-none">
-                <div className="absolute top-[-100px] right-[-100px] w-[400px] h-[400px] border border-gray-300 rounded-full" />
-                <div className="absolute top-[-160px] right-[-160px] w-[500px] h-[500px] border border-gray-200 rounded-full" />
-              </div>
-
-              <div className="relative grid grid-cols-1 lg:grid-cols-2 items-center gap-10 px-8 md:px-14 py-16">
+          {/* HERO */}
+          <section className="pt-16 pb-0">
+            <div className="max-w-7xl mx-auto px-5 md:px-10 py-16 md:py-24">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                {/* Text */}
                 <div>
-                  <span className="inline-flex items-center rounded-full border border-[#73d2d2] bg-[#73d2d2]/10 px-4 py-2 text-sm font-medium text-[#0f3549] mb-6">
-                    Confronto intelligente
-                  </span>
-
-                  <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] text-[#0f3549]">
-                    Trova l&apos;auto perfetta
-                    <br />
-                    e confronta
-                    <span className="text-[#ffdc46]"> con l&apos;acquisto.</span>
-                  </h1>
-
-                  <p className="mt-7 text-lg text-gray-500 max-w-xl leading-relaxed">
-                    Configura il tuo noleggio lungo termine e scopri il reale
-                    costo di possesso di un&apos;auto, inclusi assicurazione,
-                    manutenzione e svalutazione.
-                  </p>
-
-                  <div className="mt-8 flex flex-wrap gap-2.5">
-                    {["RCA / Kasko", "Manutenzione", "Svalutazione", "Costi reali"].map(
-                      (tag) => (
-                        <div
-                          key={tag}
-                          className="bg-white border border-[#E5E7EB] rounded-2xl px-4 py-2.5 text-sm font-medium text-[#0f3549] shadow-sm"
-                        >
-                          {tag}
-                        </div>
-                      )
-                    )}
+                  {/* Trust badge */}
+                  <div className="inline-flex items-center gap-2 border border-[#E5E7EB] rounded-full px-4 py-1.5 text-xs text-[#6B7280] mb-8">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#0f3549]" />
+                    7 modelli &nbsp;·&nbsp; Confronto immediato &nbsp;·&nbsp; Gratuito
                   </div>
 
-                  <a
-                    href="#confronto"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      document.getElementById("confronto")?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="inline-flex items-center gap-2 mt-10 bg-[#0f3549] text-white px-7 py-4 rounded-2xl font-semibold text-base hover:bg-[#1a4d66] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+                  <h1
+                    className="font-bold text-[#0A0A0A] leading-[1.08] mb-5"
+                    style={{ fontSize: "clamp(2.4rem, 4.5vw, 4rem)", letterSpacing: "-0.025em" }}
                   >
-                    Scegli la tua auto
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </a>
+                    Noleggio o acquisto?
+                    <br />
+                    <span className="text-[#0f3549]">Scopri la scelta giusta.</span>
+                  </h1>
+
+                  <p className="text-base md:text-lg text-[#6B7280] leading-relaxed max-w-lg mb-10">
+                    Configura, confronta e scegli in pochi minuti. Tutti i costi
+                    inclusi: assicurazione, manutenzione, svalutazione.
+                  </p>
+
+                  <div className="flex flex-wrap gap-3">
+                    <a
+                      href="#confronto"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById("confronto")?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      className="inline-flex items-center gap-2 bg-[#0f3549] text-white px-6 py-3 rounded-lg font-medium text-sm hover:bg-[#1a4d66] transition-colors duration-200"
+                    >
+                      Confronta ora
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </a>
+                    <Link
+                      href="/preventivo"
+                      className="inline-flex items-center gap-2 border border-[#0f3549] text-[#0f3549] px-6 py-3 rounded-lg font-medium text-sm hover:bg-[#0f3549] hover:text-white transition-colors duration-200"
+                    >
+                      Vedi preventivo
+                    </Link>
+                  </div>
                 </div>
 
+                {/* Car image */}
                 <div className="relative flex justify-center">
-                  <div className="absolute w-[380px] h-[380px] bg-[#73d2d2]/15 blur-3xl rounded-full" />
-                  <div className="relative z-10 w-full max-w-[600px] aspect-[4/3]">
+                  <div className="relative w-full max-w-[580px] aspect-[4/3]">
                     <Image
                       src="/cars/volvoxc40.jpg"
-                      alt="Auto premium — Volvo XC40"
+                      alt="Volvo XC40 — Noleggio lungo termine"
                       fill
                       priority
                       sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-contain drop-shadow-[0_30px_60px_rgba(15,53,73,0.20)] hover:scale-[1.02] transition-transform duration-700"
+                      className="object-contain drop-shadow-xl"
                     />
                   </div>
                 </div>
               </div>
             </div>
+          </section>
 
-            {/* Car Selection */}
-            {!showConfigurator && (
-              <div className="relative overflow-hidden bg-white rounded-[40px] shadow-sm border border-[#E5E7EB] p-8 md:p-12 mb-12">
-                <div className="flex items-start gap-4 mb-8">
-                  <div className="w-11 h-11 rounded-2xl bg-[#ffdc46] text-[#0f3549] flex items-center justify-center text-lg font-black shadow-sm shrink-0">
-                    1
-                  </div>
-                  <div>
-                    <h2 className="text-3xl font-bold text-[#0f3549]">
-                      Seleziona il veicolo
-                    </h2>
-                    <p className="text-gray-500 mt-1">
-                      Scegli il modello da confrontare tra noleggio e acquisto.
-                    </p>
-                  </div>
-                </div>
-
+          {/* CAR SELECTION */}
+          {!showConfigurator && (
+            <section className="border-t border-[#E5E7EB]" style={{ backgroundColor: "var(--bg-alt)" }}>
+              <div className="max-w-7xl mx-auto px-5 md:px-10 py-16">
+                <StepLabel
+                  n="1"
+                  title="Scegli il veicolo"
+                  subtitle="Seleziona il modello da confrontare tra noleggio e acquisto."
+                />
                 <div
                   id="confronto"
                   className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5"
@@ -292,31 +371,26 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-            )}
+            </section>
+          )}
 
-            {/* Configurator */}
-            {showConfigurator && (
-              <div id="configurator" className="mb-12">
-                <div className="flex items-start gap-4 mb-8">
-                  <div className="w-11 h-11 rounded-2xl bg-[#ffdc46] text-[#0f3549] flex items-center justify-center text-lg font-black shadow-sm shrink-0">
-                    2
-                  </div>
-                  <div>
-                    <h2 className="text-3xl font-bold text-[#0f3549]">
-                      Configura il noleggio
-                    </h2>
-                    <p className="text-gray-500 mt-1">
-                      Scegli durata e profilo conducente per il confronto.
-                    </p>
-                  </div>
-                </div>
+          {/* CONFIGURATOR */}
+          {showConfigurator && (
+            <section id="configurator" className="border-t border-[#E5E7EB]">
+              <div className="max-w-7xl mx-auto px-5 md:px-10 py-16">
+                <StepLabel
+                  n="2"
+                  title="Configura il noleggio"
+                  subtitle="Scegli durata e profilo conducente per il tuo confronto."
+                />
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  <div className="lg:col-span-2 bg-white border border-[#E5E7EB] rounded-[32px] p-8 shadow-sm">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Options panel */}
+                  <div className="lg:col-span-2 space-y-6">
                     <button
                       type="button"
                       onClick={handleBackToSelection}
-                      className="mb-8 inline-flex items-center gap-2 rounded-2xl border border-[#E5E7EB] bg-white px-5 py-2.5 text-sm font-semibold text-[#0f3549] shadow-sm hover:bg-[#F8F9FA] transition-colors duration-200"
+                      className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#0A0A0A] transition-colors duration-200 mb-2"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -324,73 +398,37 @@ export default function Home() {
                       Torna alla selezione
                     </button>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <div className="rounded-3xl border border-[#E5E7EB] p-6 bg-[#F8F9FA]">
-                        <p className="text-sm font-semibold text-gray-500 mb-4 uppercase tracking-wide">
-                          Durata contratto
-                        </p>
-                        <div className="grid grid-cols-2 gap-3">
-                          {["36 mesi", "48 mesi"].map((d) => (
-                            <button
-                              key={d}
-                              type="button"
-                              onClick={() => setContractDuration(d)}
-                              className={`rounded-2xl border py-4 font-semibold text-sm transition-all duration-300 ${
-                                contractDuration === d
-                                  ? "bg-[#0f3549] text-white border-[#0f3549] shadow-md"
-                                  : "bg-white text-[#0f3549] border-[#E5E7EB] hover:border-[#0f3549]/30"
-                              }`}
-                            >
-                              {d}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="rounded-3xl border border-[#E5E7EB] p-6 bg-[#F8F9FA]">
-                        <p className="text-sm font-semibold text-gray-500 mb-4 uppercase tracking-wide">
-                          Profilo conducente
-                        </p>
-                        <div className="grid grid-cols-1 gap-3">
-                          {["Neopatentato", "Guidatore esperto"].map((p) => (
-                            <button
-                              key={p}
-                              type="button"
-                              onClick={() => setDriverProfile(p)}
-                              className={`rounded-2xl border py-3.5 font-semibold text-sm transition-all duration-300 ${
-                                driverProfile === p
-                                  ? "bg-[#0f3549] text-white border-[#0f3549] shadow-md"
-                                  : "bg-white text-[#0f3549] border-[#E5E7EB] hover:border-[#0f3549]/30"
-                              }`}
-                            >
-                              {p}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+                    <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 space-y-6">
+                      <ToggleGroup
+                        label="Durata contratto"
+                        options={["36 mesi", "48 mesi"]}
+                        value={contractDuration}
+                        onChange={setContractDuration}
+                      />
+                      <div className="border-t border-[#E5E7EB]" />
+                      <ToggleGroup
+                        label="Profilo conducente"
+                        options={["Neopatentato", "Guidatore esperto"]}
+                        value={driverProfile}
+                        onChange={setDriverProfile}
+                      />
                     </div>
                   </div>
 
-                  <div className="rounded-[32px] bg-[#0f3549] text-white p-8 shadow-2xl flex flex-col justify-between">
-                    <div>
-                      <p className="text-[#73d2d2] text-sm font-medium mb-2">
+                  {/* Summary card */}
+                  <div className="bg-[#0f3549] text-white rounded-xl p-6 flex flex-col">
+                    <div className="mb-auto">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-[#73d2d2] mb-1">
                         {selectedCar}
                       </p>
-                      <p className="text-gray-400 text-xs mb-6">Canone mensile stimato</p>
-                      <h3 className="text-5xl font-bold mb-2">
-                        {currentCar?.noleggio}
-                      </h3>
-                      <p className="text-gray-400 text-sm">/mese, tutto incluso</p>
+                      <p className="text-4xl font-bold price mb-1">{currentCar?.noleggio}</p>
+                      <p className="text-sm text-white/60 mb-6">/mese · tutto incluso</p>
 
-                      <div className="mt-6 space-y-2">
-                        {["RCA inclusa", "Manutenzione inclusa", "Assistenza inclusa"].map((item) => (
-                          <div key={item} className="flex items-center gap-2 text-sm text-gray-300">
-                            <div className="w-4 h-4 rounded-full bg-[#73d2d2]/20 flex items-center justify-center shrink-0">
-                              <svg className="w-2.5 h-2.5 text-[#73d2d2]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                              </svg>
-                            </div>
-                            {item}
+                      <div className="space-y-2">
+                        {["RCA inclusa", "Manutenzione inclusa", "Assistenza inclusa"].map((s) => (
+                          <div key={s} className="flex items-center gap-2 text-sm text-white/80">
+                            <CheckIcon className="w-3.5 h-3.5 text-[#73d2d2] shrink-0" />
+                            {s}
                           </div>
                         ))}
                       </div>
@@ -402,402 +440,367 @@ export default function Home() {
                         setShowResults(true);
                         window.scrollTo({ top: 0, behavior: "smooth" });
                       }}
-                      className="mt-8 w-full relative overflow-hidden bg-[#ffdc46] text-[#0f3549] py-4 rounded-[20px] text-base font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_40px_rgba(255,220,70,0.35)] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+                      className="mt-8 w-full bg-white text-[#0f3549] py-3 rounded-lg text-sm font-semibold hover:bg-[#F7F8FA] transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
                     >
-                      Scopri il confronto completo
+                      Scopri il confronto →
                     </button>
-
-                    {(!selectedCar || !contractDuration) && (
-                      <p className="text-xs text-gray-500 text-center mt-3">
-                        {!contractDuration ? "Seleziona prima una durata" : "Seleziona un&apos;auto"}
+                    {!contractDuration && (
+                      <p className="text-xs text-white/40 text-center mt-3">
+                        Seleziona prima una durata
                       </p>
                     )}
                   </div>
                 </div>
               </div>
-            )}
-          </div>
+            </section>
+          )}
 
+          {/* FEATURE GRID */}
           {!showConfigurator && <FeatureGrid />}
         </>
       )}
 
-      {/* Results */}
+      {/* ── RESULTS ─────────────────────────────────────── */}
       {showResults && (
-        <div className="pt-32 px-5 md:px-10">
+        <div className="pt-16">
+          {/* Neopatentato banner */}
           {isNewDriver && (
-            <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-2xl p-5 mb-8 flex gap-3">
-              <svg className="w-5 h-5 shrink-0 mt-0.5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-              </svg>
-              <div>
-                <p className="font-bold mb-1">Informazione per neopatentati</p>
-                <p className="text-sm leading-relaxed">
-                  I costi assicurativi per neopatentati sono significativamente più
-                  elevati. Nel noleggio lungo termine questi costi risultano spesso
-                  più prevedibili e integrati nel canone.
+            <div className="border-b border-amber-200 bg-amber-50">
+              <div className="max-w-7xl mx-auto px-5 md:px-10 py-4 flex gap-3 items-start">
+                <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                </svg>
+                <p className="text-sm text-amber-800">
+                  <span className="font-semibold">Neopatentato:</span> i costi assicurativi sono più elevati. Nel noleggio risultano spesso più prevedibili e integrati nel canone.
                 </p>
               </div>
             </div>
           )}
 
-          <div className="mb-12">
-            <p className="text-sm text-gray-400 mb-2 uppercase tracking-wider font-medium">
-              Analisi personalizzata · {contractDuration}
-            </p>
-            <h1 className="text-4xl md:text-5xl font-bold text-[#0f3549] mb-4">
-              {selectedCar}
-            </h1>
-            <p className="text-lg text-gray-500">
-              Confronto tra noleggio lungo termine e acquisto tradizionale.
-            </p>
+          {/* Results header */}
+          <div className="border-b border-[#E5E7EB]">
+            <div className="max-w-7xl mx-auto px-5 md:px-10 py-12">
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#6B7280] mb-3">
+                Analisi personalizzata &nbsp;·&nbsp; {contractDuration}
+              </p>
+              <h1 className="text-3xl md:text-4xl font-bold text-[#0A0A0A] mb-2">{selectedCar}</h1>
+              <p className="text-base text-[#6B7280]">
+                Confronto tra noleggio lungo termine e acquisto tradizionale.
+              </p>
+            </div>
           </div>
 
           {/* Car image */}
-          <div className="relative overflow-hidden rounded-[36px] bg-gradient-to-br from-[#F8F9FA] to-white border border-[#E5E7EB] p-10 md:p-16 shadow-sm mb-10">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(15,53,73,0.03),transparent_50%)]" />
-            <div className="relative flex justify-center">
-              <div className="relative w-full max-w-3xl aspect-[16/7]">
+          <div className="border-b border-[#E5E7EB]" style={{ backgroundColor: "var(--bg-alt)" }}>
+            <div className="max-w-7xl mx-auto px-5 md:px-10 py-12">
+              <div className="relative w-full max-w-3xl mx-auto aspect-[16/7]">
                 <Image
                   src={currentCar?.image ?? "/cars/volvoxc40.jpg"}
                   alt={selectedCar}
                   fill
                   sizes="(max-width: 1280px) 100vw, 896px"
-                  className="object-contain"
+                  className="object-contain drop-shadow-lg"
                 />
               </div>
             </div>
           </div>
 
-          {/* KPI Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-10">
-            <div className="rounded-[30px] bg-[#0f3549] text-white p-7 shadow-[0_20px_50px_rgba(15,53,73,0.20)] md:col-span-2">
-              <p className="text-[#73d2d2] text-xs uppercase tracking-[0.15em] mb-4 font-semibold">
-                Canone mensile noleggio
-              </p>
-              <div className="flex items-end gap-3">
-                <h2 className="text-5xl md:text-6xl font-bold">{rentalPrice}</h2>
-                <span className="text-gray-400 mb-2 text-sm">/ mese</span>
-              </div>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {["RCA inclusa", "Manutenzione", "Assistenza"].map((tag) => (
-                  <div key={tag} className="bg-white/10 rounded-full px-3 py-1 text-xs font-medium">
-                    {tag}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white rounded-[30px] p-7 border border-[#E5E7EB] shadow-sm">
-              <p className="text-gray-400 text-xs mb-3 uppercase tracking-wide font-medium">
-                Costo totale noleggio
-              </p>
-              <h2 className="text-4xl font-bold text-[#0f3549]">{totalRental}</h2>
-              <p className="text-green-600 text-sm mt-3 font-medium flex items-center gap-1">
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                Costi prevedibili
-              </p>
-            </div>
-
-            <div className="bg-[#ffdc46] rounded-[30px] p-7 shadow-sm">
-              <p className="text-[#0f3549]/60 text-xs mb-3 uppercase tracking-wide font-medium">
-                Costo totale acquisto
-              </p>
-              <h2 className="text-4xl font-bold text-[#0f3549]">
-                €{totalOwnershipCost.toLocaleString("it-IT")}
-              </h2>
-              <p className="text-[#0f3549]/70 text-sm mt-3 font-medium">
-                Inclusi tutti i costi
-              </p>
-            </div>
-          </div>
-
-          {/* Comparison bar chart */}
-          <div className="mb-8 bg-white rounded-[32px] p-8 shadow-sm border border-[#E5E7EB]">
-            <div className="flex items-start justify-between mb-8">
-              <div>
-                <p className="text-gray-400 text-sm mb-1 font-medium">Differenza stimata</p>
-                <h2 className="text-4xl font-bold text-[#0f3549]">
-                  €{(
-                    totalOwnershipCost -
-                    parseInt(totalRental.replace(/[^\d]/g, ""))
-                  ).toLocaleString("it-IT")}
-                </h2>
-              </div>
-              <div className="bg-[#ffdc46] text-[#0f3549] px-5 py-2.5 rounded-2xl font-semibold text-sm">
-                Risparmio stimato
-              </div>
-            </div>
-
-            <div className="space-y-5">
-              {[
-                {
-                  label: "Noleggio",
-                  value: totalRental,
-                  amount: parseInt(totalRental.replace(/[^\d]/g, "")),
-                  color: "bg-[#0f3549]",
-                },
-                {
-                  label: "Acquisto",
-                  value: `€${totalOwnershipCost.toLocaleString("it-IT")}`,
-                  amount: totalOwnershipCost,
-                  color: "bg-[#ffdc46]",
-                },
-              ].map((bar) => (
-                <div key={bar.label}>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-semibold text-[#0f3549] text-sm">{bar.label}</span>
-                    <span className="text-gray-400 text-sm">{bar.value}</span>
-                  </div>
-                  <div className="w-full h-4 bg-[#F8F9FA] rounded-full overflow-hidden border border-[#E5E7EB]">
-                    <div
-                      className={`h-full ${bar.color} rounded-full transition-all duration-700`}
-                      style={{
-                        width: `${(bar.amount / totalOwnershipCost) * 100}%`,
-                      }}
-                    />
+          {/* KPI cards */}
+          <div className="border-b border-[#E5E7EB]">
+            <div className="max-w-7xl mx-auto px-5 md:px-10 py-10">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {/* Monthly rental */}
+                <div className="bg-[#0f3549] text-white rounded-xl p-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#73d2d2] mb-3">
+                    Canone mensile
+                  </p>
+                  <p className="text-4xl font-bold price mb-3">{rentalPrice}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {["RCA", "Manutenzione", "Assistenza"].map((t) => (
+                      <span key={t} className="text-xs bg-white/10 text-white/80 px-2.5 py-1 rounded-md">
+                        {t}
+                      </span>
+                    ))}
                   </div>
                 </div>
-              ))}
+
+                {/* Total rental */}
+                <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-3">
+                    Costo totale noleggio
+                  </p>
+                  <p className="text-4xl font-bold text-[#0f3549] price mb-3">{totalRental}</p>
+                  <div className="flex items-center gap-1.5 text-xs text-green-600 font-medium">
+                    <CheckIcon className="w-3.5 h-3.5" />
+                    Costi prevedibili
+                  </div>
+                </div>
+
+                {/* Total purchase */}
+                <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-3">
+                    Costo totale acquisto
+                  </p>
+                  <p className="text-4xl font-bold text-[#0A0A0A] price mb-3">
+                    €{totalOwnershipCost.toLocaleString("it-IT")}
+                  </p>
+                  <p className="text-xs text-[#6B7280]">Auto + assicurazione + manutenzione</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Comparison table */}
-          <div className="bg-white rounded-2xl shadow-sm border border-[#E5E7EB] overflow-x-auto mb-10">
-            <div className="p-6 border-b border-[#E5E7EB]">
-              <h2 className="text-xl font-bold text-[#0f3549]">Confronto dettagliato</h2>
-            </div>
-            <table className="w-full">
-              <thead>
-                <tr className="bg-[#0f3549] text-white text-xs uppercase tracking-[0.12em]">
-                  <th className="text-left px-6 py-4 font-semibold">Parametro</th>
-                  <th className="text-left px-6 py-4 font-semibold">Noleggio</th>
-                  <th className="text-left px-6 py-4 font-semibold">Acquisto</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#F8F9FA]">
-                {[
-                  { label: "Canone mensile", noleggio: rentalPrice, acquisto: currentCar?.acquisto },
-                  { label: "Costo iniziale", noleggio: "Incluso", acquisto: currentCar?.prezzoAuto },
-                  { label: "Assicurazione", noleggio: "Inclusa", acquisto: insuranceCost },
-                  { label: "Manutenzione", noleggio: "Inclusa", acquisto: currentCar?.manutenzione },
-                  { label: "Costo totale", noleggio: totalRental, acquisto: `€${totalOwnershipCost.toLocaleString("it-IT")}` },
-                ].map((row, i) => (
-                  <tr key={i} className="hover:bg-[#F8F9FA] transition-colors">
-                    <td className="px-6 py-4 font-semibold text-[#0f3549] text-sm">{row.label}</td>
-                    <td className="px-6 py-4 text-sm">
-                      <span className={i === 4 ? "font-bold text-[#0f3549]" : "text-gray-600"}>
-                        {row.noleggio}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm">
-                      <span className={i === 4 ? "font-bold text-gray-400" : "text-gray-600"}>
-                        {row.acquisto}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {/* Comparison bars + savings */}
+          <div className="border-b border-[#E5E7EB]">
+            <div className="max-w-7xl mx-auto px-5 md:px-10 py-10">
+              <div className="flex items-start justify-between mb-6 gap-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-1">
+                    Risparmio stimato
+                  </p>
+                  <p className="text-3xl font-bold text-[#0f3549] price">
+                    €{(totalOwnershipCost - parseInt(totalRental.replace(/[^\d]/g, ""))).toLocaleString("it-IT")}
+                  </p>
+                </div>
+                <span className="shrink-0 bg-[#ffdc46] text-[#0A0A0A] text-xs font-semibold px-3 py-1.5 rounded-md">
+                  A favore del noleggio
+                </span>
+              </div>
 
-          {/* Similar cars */}
-          <div className="bg-white rounded-[32px] p-6 md:p-8 shadow-sm border border-[#E5E7EB] overflow-x-auto mb-10">
-            <div className="mb-8">
-              <p className="text-sm text-gray-400 mb-1 font-medium">Alternative simili</p>
-              <h2 className="text-2xl font-bold text-[#0f3549]">Confronta altri noleggi</h2>
-            </div>
-
-            <div className="min-w-[800px]">
-              {/* 4-col grid: col1=spacer, col2=selected, col3=similar1, col4=similar2 */}
-              <div className="grid grid-cols-4 gap-4 mb-5">
-                <div />
+              <div className="space-y-4">
                 {[
                   {
-                    name: selectedCar,
-                    image: currentCar?.image ?? "",
-                    monthly: rentalPrice,
-                    isSelected: true,
-                    isCheaper: false,
+                    label: "Noleggio",
+                    amount: parseInt(totalRental.replace(/[^\d]/g, "")),
+                    display: totalRental,
+                    color: "bg-[#0f3549]",
                   },
-                  ...similarCars.map((n) => ({
-                    name: n,
-                    image: carData[n as keyof typeof carData]?.image ?? "",
-                    monthly: carData[n as keyof typeof carData]?.noleggio ?? "€0",
-                    isSelected: false,
-                    isCheaper:
-                      parseInt(carData[n as keyof typeof carData]?.noleggio.replace(/[^\d]/g, "") ?? "0") <
-                      parseInt(rentalPrice.replace(/[^\d]/g, "")),
-                  })),
-                ].map((car, index) => (
-                  <div
-                    key={index}
-                    className={`rounded-[24px] border p-5 ${
-                      car.isSelected
-                        ? "bg-[#0f3549] border-[#ffdc46] text-white shadow-lg"
-                        : "bg-white border-[#E5E7EB]"
-                    }`}
-                  >
-                    <div className="relative aspect-[16/10] mb-4">
-                      <Image
-                        src={car.image}
-                        alt={car.name}
-                        fill
-                        sizes="250px"
-                        className="object-contain"
+                  {
+                    label: "Acquisto",
+                    amount: totalOwnershipCost,
+                    display: `€${totalOwnershipCost.toLocaleString("it-IT")}`,
+                    color: "bg-[#E5E7EB]",
+                  },
+                ].map((bar) => (
+                  <div key={bar.label}>
+                    <div className="flex justify-between text-sm mb-1.5">
+                      <span className="font-medium text-[#0A0A0A]">{bar.label}</span>
+                      <span className="text-[#6B7280] price">{bar.display}</span>
+                    </div>
+                    <div className="h-3 bg-[#F7F8FA] rounded-full overflow-hidden border border-[#E5E7EB]">
+                      <div
+                        className={`h-full ${bar.color} rounded-full transition-all duration-700`}
+                        style={{ width: `${(bar.amount / totalOwnershipCost) * 100}%` }}
                       />
                     </div>
-                    <div className="flex flex-wrap gap-1.5 mb-3 min-h-[24px]">
-                      {car.isSelected && (
-                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-[#ffdc46] text-[#0f3549]">
-                          ✓ Selezionata
-                        </span>
-                      )}
-                      {car.isCheaper && (
-                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
-                          Più economica
-                        </span>
-                      )}
-                    </div>
-                    <h3 className={`text-base font-bold mb-1 ${car.isSelected ? "text-white" : "text-[#0A0A0A]"}`}>
-                      {car.name}
-                    </h3>
-                    <p className={`text-sm ${car.isSelected ? "text-[#73d2d2]" : "text-gray-500"}`}>
-                      {car.monthly}/mese
-                    </p>
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
 
-              <div className="space-y-2">
-                {[
-                  {
-                    label: "Canone mensile",
-                    values: [rentalPrice, ...similarCars.map((n) => carData[n as keyof typeof carData]?.noleggio ?? "-")],
-                  },
-                  {
-                    label: "Alimentazione",
-                    values: [currentCar?.alimentazione ?? "-", ...similarCars.map((n) => carData[n as keyof typeof carData]?.alimentazione ?? "-")],
-                  },
-                  {
-                    label: "Servizi inclusi",
-                    values: ["RCA • Kasko • Tagliandi", ...similarCars.map(() => "RCA • Kasko • Tagliandi")],
-                  },
-                  {
-                    label: "Totale noleggio",
-                    values: [
-                      totalRental,
-                      ...similarCars.map((n) => {
-                        const m = parseInt(carData[n as keyof typeof carData]?.noleggio.replace(/[^\d]/g, "") ?? "0");
-                        return is36Months ? `€${(m * 36).toLocaleString("it-IT")}` : `€${(m * 48).toLocaleString("it-IT")}`;
-                      }),
-                    ],
-                  },
-                ].map((row, ri) => (
-                  /* 4-col grid matches header above: label | selected | similar1 | similar2 */
-                  <div key={ri} className="grid grid-cols-4 gap-4">
-                    <div className="flex items-center text-sm font-semibold text-[#0f3549]">
-                      {row.label}
+          {/* Detail table */}
+          <div className="border-b border-[#E5E7EB]">
+            <div className="max-w-7xl mx-auto px-5 md:px-10 py-10">
+              <h2 className="text-lg font-semibold text-[#0A0A0A] mb-6">Confronto dettagliato</h2>
+              <div className="overflow-x-auto rounded-xl border border-[#E5E7EB]">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-[#0f3549] text-white">
+                      <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Parametro</th>
+                      <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Noleggio</th>
+                      <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Acquisto</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#E5E7EB]">
+                    {[
+                      { label: "Canone mensile",  noleggio: rentalPrice,   acquisto: currentCar?.acquisto },
+                      { label: "Costo iniziale",  noleggio: "Incluso",     acquisto: currentCar?.prezzoAuto },
+                      { label: "Assicurazione",   noleggio: "Inclusa",     acquisto: insuranceCost },
+                      { label: "Manutenzione",    noleggio: "Inclusa",     acquisto: currentCar?.manutenzione },
+                      { label: "Costo totale",    noleggio: totalRental,   acquisto: `€${totalOwnershipCost.toLocaleString("it-IT")}` },
+                    ].map((row, i) => (
+                      <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-[#F7F8FA]"}>
+                        <td className="px-5 py-4 font-medium text-[#0A0A0A]">{row.label}</td>
+                        <td className={`px-5 py-4 price ${i === 4 ? "font-bold text-[#0f3549]" : "text-[#6B7280]"}`}>
+                          {row.noleggio}
+                        </td>
+                        <td className={`px-5 py-4 price ${i === 4 ? "font-bold text-[#0A0A0A]" : "text-[#6B7280]"}`}>
+                          {row.acquisto}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          {/* Similar cars comparison — 3-column CSS Grid, flattened for perfect alignment */}
+          <div className="border-b border-[#E5E7EB]">
+            <div className="max-w-7xl mx-auto px-5 md:px-10 py-10">
+              <div className="mb-6">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-1">
+                  Alternative simili
+                </p>
+                <h2 className="text-lg font-semibold text-[#0A0A0A]">Confronta altri noleggi</h2>
+              </div>
+
+              <div className="overflow-x-auto">
+                {/* Single grid: all rows are direct children — guarantees alignment */}
+                <div
+                  className="grid min-w-[600px] border border-[#E5E7EB] rounded-xl overflow-hidden"
+                  style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
+                >
+                  {/* ── Car header cells ── */}
+                  {comparisonCars.map((car, idx) => (
+                    <div
+                      key={`hdr-${idx}`}
+                      className={`p-5 ${idx > 0 ? "border-l border-[#E5E7EB]" : "border-l-4 border-l-[#0f3549]"} ${
+                        car.isSelected ? "bg-[#0f3549]/5" : "bg-white"
+                      }`}
+                    >
+                      <div className="relative aspect-[4/3] mb-4">
+                        <Image
+                          src={car.image}
+                          alt={car.name}
+                          fill
+                          sizes="240px"
+                          className="object-contain"
+                        />
+                      </div>
+                      <div className="flex flex-wrap gap-1.5 mb-2 min-h-[24px]">
+                        {car.isSelected && (
+                          <span className="inline-flex items-center gap-1 bg-[#0f3549] text-white text-[10px] font-semibold px-2 py-0.5 rounded-md">
+                            <CheckIcon className="w-2.5 h-2.5" />
+                            Selezionata
+                          </span>
+                        )}
+                        {car.isCheaper && (
+                          <span className="bg-[#ffdc46] text-[#0A0A0A] text-[10px] font-semibold px-2 py-0.5 rounded-md">
+                            Più economica
+                          </span>
+                        )}
+                      </div>
+                      <p className={`text-sm font-semibold ${car.isSelected ? "text-[#0f3549]" : "text-[#0A0A0A]"}`}>
+                        {car.name}
+                      </p>
+                      <p className="text-xs text-[#6B7280] price">{car.monthly}/mese</p>
                     </div>
-                    {row.values.map((val, vi) => (
+                  ))}
+
+                  {/* ── Data rows — flattened so CSS grid rows stay aligned ── */}
+                  {comparisonRows.flatMap((row, ri) => [
+                    /* Full-width label row */
+                    <div
+                      key={`lbl-${ri}`}
+                      className="col-span-3 px-5 py-2 border-t border-[#E5E7EB] bg-[#F7F8FA]"
+                    >
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-[#6B7280]">
+                        {row.label}
+                      </span>
+                    </div>,
+                    /* Value cells (one per car column) */
+                    ...row.values.map((val, vi) => (
                       <div
-                        key={vi}
-                        className={`rounded-xl px-4 py-3 text-center text-sm font-medium border ${
+                        key={`val-${ri}-${vi}`}
+                        className={`px-5 py-3.5 text-sm price ${vi > 0 ? "border-l border-[#E5E7EB]" : "border-l-4 border-l-[#0f3549]"} ${
                           vi === 0
-                            ? "bg-[#0f3549] text-white border-[#ffdc46]"
-                            : "bg-white text-[#0A0A0A] border-[#E5E7EB]"
+                            ? "bg-[#0f3549]/5 text-[#0f3549] font-semibold"
+                            : "bg-white text-[#0A0A0A]"
                         }`}
                       >
                         {val}
                       </div>
-                    ))}
-                  </div>
-                ))}
+                    )),
+                  ])}
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Benefits section */}
-          <div className="relative overflow-hidden bg-[#0f3549] text-white rounded-[40px] p-10 md:p-14 shadow-[0_30px_80px_rgba(15,53,73,0.20)] mb-10">
-            <div className="absolute top-[-100px] right-[-100px] w-[320px] h-[320px] bg-[#73d2d2]/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-[-120px] left-[-120px] w-[300px] h-[300px] bg-[#ffdc46]/8 rounded-full blur-3xl" />
-
-            <div className="relative z-10">
-              <p className="text-[#73d2d2] text-xs font-semibold tracking-[0.25em] uppercase mb-5">
-                Analisi finale
-              </p>
-              <h2 className="text-4xl md:text-5xl font-bold max-w-3xl mb-6 leading-tight">
-                Il vantaggio del noleggio
-                <br />
-                non è solo economico.
-              </h2>
-              <p className="text-gray-300 text-base leading-relaxed max-w-2xl mb-12">
-                Con il noleggio hai una visione più chiara dei costi nel tempo,
-                elimini il rischio della svalutazione e riduci gli imprevisti.
-                Il vero vantaggio è la prevedibilità.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div className="bg-white/10 backdrop-blur rounded-3xl p-6">
-                  <p className="text-[#73d2d2] text-xs mb-3 font-medium uppercase tracking-wide">
+          {/* Benefits summary */}
+          <div className="border-b border-[#E5E7EB]" style={{ backgroundColor: "var(--bg-alt)" }}>
+            <div className="max-w-7xl mx-auto px-5 md:px-10 py-12">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-3">
                     Svalutazione evitata
                   </p>
-                  <h3 className="text-4xl font-bold mb-3">Fino al 50%</h3>
-                  <p className="text-gray-300 text-sm leading-relaxed">
+                  <p className="text-3xl font-bold text-[#0f3549] mb-2">Fino al 50%</p>
+                  <p className="text-sm text-[#6B7280] leading-relaxed">
                     Molte auto perdono metà del valore in 4 anni. Con il noleggio
                     non gestisci rivendita né svalutazione.
                   </p>
                 </div>
 
-                <div className="bg-white/10 backdrop-blur rounded-3xl p-6">
-                  <p className="text-[#73d2d2] text-xs mb-4 font-medium uppercase tracking-wide">
-                    Servizi inclusi
+                <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-4">
+                    Tutto incluso
                   </p>
-                  <div className="space-y-3 text-sm">
-                    {["Cambio gomme", "Auto sostitutiva", "RCA / Kasko", "Manutenzione", "Assistenza stradale"].map(
-                      (item) => (
-                        <div key={item} className="flex items-center justify-between">
-                          <span className="text-gray-300">{item}</span>
-                          <span className="font-semibold text-xs">Incluso</span>
-                        </div>
-                      )
-                    )}
+                  <div className="space-y-2.5">
+                    {[
+                      "Cambio gomme",
+                      "Auto sostitutiva",
+                      "RCA / Kasko",
+                      "Manutenzione",
+                      "Assistenza stradale",
+                    ].map((item) => (
+                      <div key={item} className="flex items-center justify-between text-sm">
+                        <span className="text-[#6B7280]">{item}</span>
+                        <span className="font-medium text-[#0f3549] text-xs">Incluso</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                <div className="bg-[#ffdc46] text-[#0f3549] rounded-3xl p-6">
-                  <p className="text-xs font-semibold mb-3 uppercase tracking-wide">
-                    Costi imprevisti ridotti
+                <div className="bg-[#0f3549] text-white rounded-xl p-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#73d2d2] mb-3">
+                    Controllo totale
                   </p>
-                  <h3 className="text-3xl font-bold mb-3">Controllo totale</h3>
-                  <p className="text-sm leading-relaxed">
-                    Un unico canone mensile per una gestione più semplice e
-                    prevedibile delle spese.
+                  <p className="text-3xl font-bold mb-3">Un canone. Nessuna sorpresa.</p>
+                  <p className="text-sm text-white/70 leading-relaxed">
+                    Gestione più semplice e prevedibile di tutte le spese legate
+                    all&apos;auto.
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* CTA Section */}
-          <div className="bg-white rounded-[40px] border border-[#E5E7EB] shadow-sm overflow-hidden mb-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="bg-[#0f3549] text-white p-10 md:p-14 relative overflow-hidden">
-                <div className="absolute top-[-100px] right-[-100px] w-[280px] h-[280px] bg-[#73d2d2]/10 rounded-full blur-3xl" />
-                <div className="relative z-10">
-                  <p className="text-[#73d2d2] text-xs uppercase tracking-[0.2em] mb-5 font-semibold">
-                    Mobilità intelligente
+          {/* CTA */}
+          <div className="border-b border-[#E5E7EB]">
+            <div className="max-w-7xl mx-auto px-5 md:px-10 py-12">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-3">
+                    Passo successivo
                   </p>
-                  <h2 className="text-4xl font-bold leading-tight mb-6">
-                    Auto nuova
-                    <br />
-                    ogni 4 anni
+                  <h2 className="text-2xl font-bold text-[#0A0A0A] mb-4">
+                    Vuoi un&apos;offerta personalizzata?
                   </h2>
-                  <p className="text-gray-300 text-base leading-relaxed mb-10">
-                    A fine contratto restituisci l&apos;auto e scegli il modello
-                    successivo. Nessuna gestione della rivendita.
+                  <p className="text-[#6B7280] text-sm leading-relaxed mb-6">
+                    Rispondiamo entro 24h con una proposta su misura per modello,
+                    durata e chilometraggio. Nessun impegno.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <Link href={`/preventivo?car=${encodeURIComponent(selectedCar)}`}>
+                      <button className="bg-[#0f3549] text-white px-6 py-3 rounded-lg font-medium text-sm hover:bg-[#1a4d66] transition-colors duration-200">
+                        Scopri il preventivo completo
+                      </button>
+                    </Link>
+                    <button
+                      onClick={handleReset}
+                      className="border border-[#E5E7EB] text-[#6B7280] px-6 py-3 rounded-lg font-medium text-sm hover:border-[#0A0A0A] hover:text-[#0A0A0A] transition-colors duration-200"
+                    >
+                      ← Torna alla home
+                    </button>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-4">
+                    Cosa è incluso nel noleggio
                   </p>
                   <div className="space-y-3">
                     {[
@@ -805,48 +808,18 @@ export default function Home() {
                       "Manutenzione inclusa",
                       "Assistenza stradale",
                       "Cambio gomme disponibile",
-                      "Costi prevedibili",
+                      "Costi mensili prevedibili",
+                      "Zero svalutazione da gestire",
                     ].map((item) => (
                       <div key={item} className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                          <svg className="w-4 h-4 text-[#ffdc46]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
-                        </div>
-                        <span className="text-sm">{item}</span>
+                        <CheckIcon className="w-4 h-4 text-[#0f3549] shrink-0" />
+                        <span className="text-sm text-[#0A0A0A]">{item}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
-
-              <div className="p-10 md:p-14 bg-[#F8F9FA] flex flex-col justify-center">
-                <p className="text-[#73d2d2] text-xs uppercase tracking-[0.2em] mb-5 font-semibold">
-                  Preventivo personalizzato
-                </p>
-                <h2 className="text-4xl font-bold text-[#0f3549] leading-tight mb-5">
-                  Vuoi un&apos;offerta su misura?
-                </h2>
-                <p className="text-gray-500 text-base leading-relaxed mb-8">
-                  Rispondiamo entro 24h con una proposta personalizzata per
-                  modello, durata e chilometraggio.
-                </p>
-                <Link href={`/preventivo?car=${encodeURIComponent(selectedCar)}`}>
-                  <button className="w-full bg-[#ffdc46] text-[#0f3549] px-8 py-4 rounded-2xl font-bold text-base hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-[0_20px_50px_rgba(15,53,73,0.15)] transition-all duration-300 shadow-md">
-                    Scopri il preventivo completo
-                  </button>
-                </Link>
-              </div>
             </div>
-          </div>
-
-          <div className="text-center pb-8">
-            <button
-              onClick={handleReset}
-              className="bg-white border border-[#E5E7EB] px-8 py-3.5 rounded-2xl font-semibold text-sm text-[#0f3549] hover:bg-[#F8F9FA] transition-colors shadow-sm"
-            >
-              ← Torna alla home
-            </button>
           </div>
         </div>
       )}

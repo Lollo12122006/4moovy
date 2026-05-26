@@ -4,65 +4,59 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handler = () => setScrolled(window.scrollY > 0);
+    window.addEventListener("scroll", handler);
+    return () => window.removeEventListener("scroll", handler);
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-full z-[9999] px-4 pt-4">
-      <nav
-        className={`max-w-7xl mx-auto flex items-center justify-between rounded-[28px] border border-white/50 backdrop-blur-2xl transition-all duration-500 ${
-          isScrolled
-            ? "px-6 py-3 bg-white/95 shadow-md border-[#E5E7EB]/80"
-            : "px-8 py-5 bg-white/80 shadow-sm"
-        }`}
-      >
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-xl bg-[#0f3549] flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105">
-            <span className="text-[#ffdc46] font-black text-xs tracking-tighter">4M</span>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#E5E7EB] transition-shadow duration-200 ${
+        scrolled ? "shadow-sm" : ""
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-5 md:px-10 h-16 flex items-center justify-between gap-8">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-[#0f3549] flex items-center justify-center">
+            <span className="text-white font-bold text-[10px] tracking-tight">4M</span>
           </div>
-          <div>
-            <p className="text-xl font-bold text-[#0f3549] tracking-tight leading-none">
-              4Moovy
-            </p>
-            <p className="text-[11px] text-[#73d2d2] font-medium leading-tight">
-              Noleggio intelligente
-            </p>
-          </div>
+          <span
+            className="font-semibold text-[#0f3549] text-[15px]"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
+          >
+            4Moovy
+          </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-10 text-sm font-medium text-[#0f3549]/60">
-          <Link
-            href="/"
-            className="hover:text-[#0f3549] transition-colors duration-200"
-          >
-            Home
-          </Link>
-          <Link
-            href="/#confronto"
-            className="hover:text-[#0f3549] transition-colors duration-200"
-          >
-            Confronto
-          </Link>
-          <Link
-            href="/preventivo"
-            className="hover:text-[#0f3549] transition-colors duration-200"
-          >
-            Preventivo
-          </Link>
-        </div>
+        {/* Nav links */}
+        <nav className="hidden md:flex items-center gap-7">
+          {[
+            { label: "Home", href: "/" },
+            { label: "Confronto", href: "/#confronto" },
+            { label: "Preventivo", href: "/preventivo" },
+          ].map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="text-sm text-[#6B7280] hover:text-[#0A0A0A] transition-colors duration-200"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
 
+        {/* CTA */}
         <a
           href="mailto:info@4moovy.it?subject=Richiesta informazioni noleggio"
-          className="bg-[#0f3549] text-white px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all duration-300 hover:bg-[#1a4d66] hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+          className="shrink-0 bg-[#0f3549] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1a4d66] transition-colors duration-200"
         >
           Contattaci
         </a>
-      </nav>
-    </div>
+      </div>
+    </header>
   );
 }
