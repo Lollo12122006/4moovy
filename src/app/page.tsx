@@ -212,7 +212,6 @@ export default function Home() {
   }, [selectedCar]);
 
   const { ref: carsRef, inView: carsInView } = useInView({ threshold: 0.05 });
-  const { ref: compRef, inView: compInView } = useInView({ threshold: 0.1 });
 
   /* ── Comparison cars (for the similar-cars table) ── */
   const comparisonCars = [
@@ -682,7 +681,7 @@ export default function Home() {
           </div>
 
           {/* Similar cars comparison — 3-column CSS Grid, flattened for perfect alignment */}
-          <div ref={compRef} className="border-b border-[#E5E7EB]">
+          <div className="border-b border-[#E5E7EB]">
             <div className="max-w-7xl mx-auto px-5 md:px-10 py-10">
               <div className="mb-6">
                 <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-1">
@@ -701,10 +700,10 @@ export default function Home() {
                   {comparisonCars.map((car, idx) => (
                     <div
                       key={`hdr-${idx}`}
-                      className={`p-5 ${idx > 0 ? "border-l border-[#E5E7EB]" : "border-l-4 border-l-[#0f3549]"} ${
+                      className={`animate-fade-up p-5 ${idx > 0 ? "border-l border-[#E5E7EB]" : "border-l-4 border-l-[#0f3549]"} ${
                         car.isSelected ? "bg-[#0f3549]/5" : "bg-white"
-                      } ${compInView ? "animate-fade-up" : "opacity-0"}`}
-                      style={compInView ? { animationDelay: `${idx * 80}ms` } : {}}
+                      }`}
+                      style={{ animationDelay: `${idx * 80}ms` }}
                     >
                       <div className="relative aspect-[4/3] mb-4">
                         <Image
@@ -740,8 +739,8 @@ export default function Home() {
                     /* Full-width label row */
                     <div
                       key={`lbl-${ri}`}
-                      className={`col-span-3 px-5 py-2 border-t border-[#E5E7EB] bg-[#F7F8FA] ${compInView ? "animate-fade-in" : "opacity-0"}`}
-                      style={compInView ? { animationDelay: `${240 + ri * 80}ms` } : {}}
+                      className="animate-fade-in col-span-3 px-5 py-2 border-t border-[#E5E7EB] bg-[#F7F8FA]"
+                      style={{ animationDelay: `${240 + ri * 80}ms` }}
                     >
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-[#6B7280]">
                         {row.label}
@@ -751,12 +750,12 @@ export default function Home() {
                     ...row.values.map((val, vi) => (
                       <div
                         key={`val-${ri}-${vi}`}
-                        className={`px-5 py-3.5 text-sm price ${vi > 0 ? "border-l border-[#E5E7EB]" : "border-l-4 border-l-[#0f3549]"} ${
+                        className={`animate-fade-in px-5 py-3.5 text-sm price ${vi > 0 ? "border-l border-[#E5E7EB]" : "border-l-4 border-l-[#0f3549]"} ${
                           vi === 0
                             ? "bg-[#0f3549]/5 text-[#0f3549] font-semibold"
                             : "bg-white text-[#0A0A0A]"
-                        } ${compInView ? "animate-fade-in" : "opacity-0"}`}
-                        style={compInView ? { animationDelay: `${240 + ri * 80}ms` } : {}}
+                        }`}
+                        style={{ animationDelay: `${240 + ri * 80}ms` }}
                       >
                         {val}
                       </div>
