@@ -530,17 +530,71 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Car image */}
+          {/* Premium car card */}
           <div className="border-b border-[#E5E7EB]" style={{ backgroundColor: "var(--bg-alt)" }}>
-            <div className="max-w-7xl mx-auto px-5 md:px-10 py-12">
-              <div className="relative w-full max-w-3xl mx-auto aspect-[16/7]">
-                <Image
-                  src={currentCar?.image ?? "/cars/volvoxc40.jpg"}
-                  alt={selectedCar}
-                  fill
-                  sizes="(max-width: 1280px) 100vw, 896px"
-                  className="object-contain drop-shadow-lg"
-                />
+            <div className="max-w-7xl mx-auto px-5 md:px-10 py-10">
+              <div className="bg-white border border-[#E5E7EB] rounded-2xl shadow-md overflow-hidden animate-fade-up">
+                <div className="flex flex-col lg:flex-row">
+
+                  {/* Left — image */}
+                  <div
+                    className="relative w-full lg:w-[45%] bg-[#F7F8FA]"
+                    style={{ aspectRatio: "16/9" }}
+                  >
+                    <Image
+                      src={currentCar?.image ?? "/cars/volvoxc40.jpg"}
+                      alt={selectedCar}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 45vw"
+                      className="object-contain p-6"
+                    />
+                  </div>
+
+                  {/* Right — info */}
+                  <div className="w-full lg:w-[55%] p-7 md:p-8 flex flex-col justify-center border-t border-[#E5E7EB] lg:border-t-0 lg:border-l">
+
+                    {/* Brand badge */}
+                    <span className="self-start text-xs font-semibold uppercase tracking-widest text-[#0f3549] bg-[#0f3549]/8 px-2.5 py-1 rounded-md mb-3">
+                      {selectedCar.split(" ")[0]}
+                    </span>
+
+                    {/* Car name */}
+                    <h2 className="text-2xl md:text-3xl font-bold text-[#0A0A0A] leading-tight mb-2">
+                      {selectedCar}
+                    </h2>
+
+                    {/* Short description */}
+                    {currentCar?.shortDescription && (
+                      <p className="text-sm text-[#6B7280] leading-relaxed mb-5">
+                        {currentCar.shortDescription}
+                      </p>
+                    )}
+
+                    {/* Service badges */}
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {["RCA inclusa", "Manutenzione inclusa", "Assistenza 24/7"].map((s) => (
+                        <span
+                          key={s}
+                          className="inline-flex items-center gap-1.5 text-xs font-medium text-[#0f3549] bg-[#0f3549]/8 border border-[#0f3549]/20 px-2.5 py-1 rounded-md"
+                        >
+                          <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Monthly price */}
+                    <div className="border-t border-[#E5E7EB] pt-5">
+                      <p className="text-xs font-semibold uppercase tracking-widest text-[#6B7280] mb-1">
+                        Canone mensile
+                      </p>
+                      <p className="text-4xl font-bold text-[#0f3549] price">{rentalPrice}</p>
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>
