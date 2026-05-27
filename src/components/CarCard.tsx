@@ -27,7 +27,7 @@ export default function CarCard({
     <button
       type="button"
       onClick={onSelect}
-      className={`group relative text-left rounded-2xl border bg-white transition-all duration-200 overflow-hidden ${
+      className={`group relative text-left rounded-2xl border bg-white transition-all duration-200 overflow-hidden hover:-translate-y-1 ${
         isSelected
           ? "border-[#0f3549] shadow-md ring-1 ring-[#0f3549]"
           : "border-[#E5E7EB] hover:border-[#0f3549] hover:shadow-md"
@@ -87,7 +87,7 @@ export default function CarCard({
             {!showConfigurator && (
               <div
                 onClick={onConfigure}
-                className="w-full text-center bg-[#0f3549] text-white text-sm font-medium py-2.5 rounded-lg hover:bg-[#1a4d66] transition-colors duration-200 cursor-pointer"
+                className="w-full text-center bg-[#0f3549] text-white text-sm font-medium py-2.5 rounded-lg hover:bg-[#1a4d66] hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 cursor-pointer"
               >
                 Vai al confronto →
               </div>

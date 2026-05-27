@@ -54,3 +54,43 @@ h6 {
   outline: 2px solid var(--brand);
   outline-offset: 2px;
 }
+
+/* ── Keyframes ─────────────────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Animation utilities */
+.animate-fade-up {
+  animation: fadeUp 0.45s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s ease-out both;
+}
+
+/* Respect system reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in {
+    animation: none;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}

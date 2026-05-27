@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CarCard from "@/components/CarCard";
 import FeatureGrid from "@/components/FeatureGrid";
+import { useInView } from "@/hooks/useInView";
 
 /* ─── DATA ──────────────────────────────────────────────── */
 const carData = {
@@ -210,6 +211,9 @@ export default function Home() {
     if (!selectedCar) setShowConfigurator(false);
   }, [selectedCar]);
 
+  const { ref: carsRef, inView: carsInView } = useInView({ threshold: 0.05 });
+  const { ref: compRef, inView: compInView } = useInView({ threshold: 0.1 });
+
   /* ── Comparison cars (for the similar-cars table) ── */
   const comparisonCars = [
     {
@@ -305,33 +309,42 @@ export default function Home() {
                 {/* Text */}
                 <div>
                   {/* Trust badge */}
-                  <div className="inline-flex items-center gap-2 border border-[#E5E7EB] rounded-full px-4 py-1.5 text-xs text-[#6B7280] mb-8">
+                  <div
+                    className="animate-fade-up inline-flex items-center gap-2 border border-[#E5E7EB] rounded-full px-4 py-1.5 text-xs text-[#6B7280] mb-8"
+                    style={{ animationDelay: "0ms" }}
+                  >
                     <span className="w-1.5 h-1.5 rounded-full bg-[#0f3549]" />
                     7 modelli &nbsp;·&nbsp; Confronto immediato &nbsp;·&nbsp; Gratuito
                   </div>
 
                   <h1
-                    className="font-bold text-[#0A0A0A] leading-[1.08] mb-5"
-                    style={{ fontSize: "clamp(2.4rem, 4.5vw, 4rem)", letterSpacing: "-0.025em" }}
+                    className="animate-fade-up font-bold text-[#0A0A0A] leading-[1.08] mb-5"
+                    style={{ fontSize: "clamp(2.4rem, 4.5vw, 4rem)", letterSpacing: "-0.025em", animationDelay: "150ms" }}
                   >
                     Noleggio o acquisto?
                     <br />
                     <span className="text-[#0f3549]">Scopri la scelta giusta.</span>
                   </h1>
 
-                  <p className="text-base md:text-lg text-[#6B7280] leading-relaxed max-w-lg mb-10">
+                  <p
+                    className="animate-fade-up text-base md:text-lg text-[#6B7280] leading-relaxed max-w-lg mb-10"
+                    style={{ animationDelay: "300ms" }}
+                  >
                     Configura, confronta e scegli in pochi minuti. Tutti i costi
                     inclusi: assicurazione, manutenzione, svalutazione.
                   </p>
 
-                  <div className="flex flex-wrap gap-3">
+                  <div
+                    className="animate-fade-up flex flex-wrap gap-3"
+                    style={{ animationDelay: "450ms" }}
+                  >
                     <a
                       href="#confronto"
                       onClick={(e) => {
                         e.preventDefault();
                         document.getElementById("confronto")?.scrollIntoView({ behavior: "smooth" });
                       }}
-                      className="inline-flex items-center gap-2 bg-[#0f3549] text-white px-6 py-3 rounded-lg font-medium text-sm hover:bg-[#1a4d66] transition-colors duration-200"
+                      className="inline-flex items-center gap-2 bg-[#0f3549] text-white px-6 py-3 rounded-lg font-medium text-sm hover:bg-[#1a4d66] hover:scale-[1.02] active:scale-[0.98] transition-all duration-150"
                     >
                       Confronta ora
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -340,7 +353,7 @@ export default function Home() {
                     </a>
                     <Link
                       href="/preventivo"
-                      className="inline-flex items-center gap-2 border border-[#0f3549] text-[#0f3549] px-6 py-3 rounded-lg font-medium text-sm hover:bg-[#0f3549] hover:text-white transition-colors duration-200"
+                      className="inline-flex items-center gap-2 border border-[#0f3549] text-[#0f3549] px-6 py-3 rounded-lg font-medium text-sm hover:bg-[#0f3549] hover:text-white hover:scale-[1.02] active:scale-[0.98] transition-all duration-150"
                     >
                       Vedi preventivo
                     </Link>
@@ -374,22 +387,28 @@ export default function Home() {
                   subtitle="Seleziona il modello da confrontare tra noleggio e acquisto."
                 />
                 <div
+                  ref={carsRef}
                   id="confronto"
                   className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5"
                 >
-                  {Object.entries(carData).map(([name, car]) => (
-                    <CarCard
+                  {Object.entries(carData).map(([name, car], idx) => (
+                    <div
                       key={name}
-                      name={name}
-                      image={car.image}
-                      description={car.shortDescription}
-                      price={car.noleggio}
-                      alimentazione={car.alimentazione}
-                      isSelected={selectedCar === name}
-                      showConfigurator={showConfigurator}
-                      onSelect={() => handleSelectCar(name)}
-                      onConfigure={handleConfigure}
-                    />
+                      className={carsInView ? "animate-fade-up" : "opacity-0"}
+                      style={carsInView ? { animationDelay: `${idx * 60}ms` } : {}}
+                    >
+                      <CarCard
+                        name={name}
+                        image={car.image}
+                        description={car.shortDescription}
+                        price={car.noleggio}
+                        alimentazione={car.alimentazione}
+                        isSelected={selectedCar === name}
+                        showConfigurator={showConfigurator}
+                        onSelect={() => handleSelectCar(name)}
+                        onConfigure={handleConfigure}
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -642,7 +661,11 @@ export default function Home() {
                       { label: "Manutenzione",    noleggio: "Inclusa",     acquisto: currentCar?.manutenzione },
                       { label: "Costo totale",    noleggio: totalRental,   acquisto: `€${totalOwnershipCost.toLocaleString("it-IT")}` },
                     ].map((row, i) => (
-                      <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-[#F7F8FA]"}>
+                      <tr
+                        key={i}
+                        className={`animate-fade-up ${i % 2 === 0 ? "bg-white" : "bg-[#F7F8FA]"}`}
+                        style={{ animationDelay: `${i * 70}ms` }}
+                      >
                         <td className="px-5 py-4 font-medium text-[#0A0A0A]">{row.label}</td>
                         <td className={`px-5 py-4 price ${i === 4 ? "font-bold text-[#0f3549]" : "text-[#6B7280]"}`}>
                           {row.noleggio}
@@ -659,7 +682,7 @@ export default function Home() {
           </div>
 
           {/* Similar cars comparison — 3-column CSS Grid, flattened for perfect alignment */}
-          <div className="border-b border-[#E5E7EB]">
+          <div ref={compRef} className="border-b border-[#E5E7EB]">
             <div className="max-w-7xl mx-auto px-5 md:px-10 py-10">
               <div className="mb-6">
                 <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-1">
@@ -680,7 +703,8 @@ export default function Home() {
                       key={`hdr-${idx}`}
                       className={`p-5 ${idx > 0 ? "border-l border-[#E5E7EB]" : "border-l-4 border-l-[#0f3549]"} ${
                         car.isSelected ? "bg-[#0f3549]/5" : "bg-white"
-                      }`}
+                      } ${compInView ? "animate-fade-up" : "opacity-0"}`}
+                      style={compInView ? { animationDelay: `${idx * 80}ms` } : {}}
                     >
                       <div className="relative aspect-[4/3] mb-4">
                         <Image
@@ -716,7 +740,8 @@ export default function Home() {
                     /* Full-width label row */
                     <div
                       key={`lbl-${ri}`}
-                      className="col-span-3 px-5 py-2 border-t border-[#E5E7EB] bg-[#F7F8FA]"
+                      className={`col-span-3 px-5 py-2 border-t border-[#E5E7EB] bg-[#F7F8FA] ${compInView ? "animate-fade-in" : "opacity-0"}`}
+                      style={compInView ? { animationDelay: `${240 + ri * 80}ms` } : {}}
                     >
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-[#6B7280]">
                         {row.label}
@@ -730,7 +755,8 @@ export default function Home() {
                           vi === 0
                             ? "bg-[#0f3549]/5 text-[#0f3549] font-semibold"
                             : "bg-white text-[#0A0A0A]"
-                        }`}
+                        } ${compInView ? "animate-fade-in" : "opacity-0"}`}
+                        style={compInView ? { animationDelay: `${240 + ri * 80}ms` } : {}}
                       >
                         {val}
                       </div>

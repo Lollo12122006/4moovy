@@ -14,8 +14,10 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#E5E7EB] transition-shadow duration-200 ${
-        scrolled ? "shadow-sm" : ""
+      className={`fixed top-0 left-0 right-0 z-50 border-b border-[#E5E7EB] transition-all duration-300 ${
+        scrolled
+          ? "bg-white/90 backdrop-blur-md shadow-sm"
+          : "bg-white"
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 md:px-10 h-16 flex items-center justify-between gap-8">

@@ -1,3 +1,7 @@
+"use client";
+
+import { useInView } from "@/hooks/useInView";
+
 const features = [
   {
     icon: (
@@ -38,6 +42,8 @@ const features = [
 ];
 
 export default function FeatureGrid() {
+  const { ref: gridRef, inView } = useInView({ threshold: 0.1 });
+
   return (
     <section className="py-20 border-t border-[#E5E7EB]" style={{ backgroundColor: "var(--bg-alt)" }}>
       <div className="max-w-7xl mx-auto px-5 md:px-10">
@@ -52,11 +58,14 @@ export default function FeatureGrid() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {features.map((f, i) => (
             <div
               key={i}
-              className="bg-white border border-[#E5E7EB] rounded-xl p-6 hover:border-[#0f3549] hover:shadow-sm transition-all duration-200"
+              className={`bg-white border border-[#E5E7EB] rounded-xl p-6 hover:border-[#0f3549] hover:shadow-sm transition-all duration-200 ${
+                inView ? "animate-fade-up" : "opacity-0"
+              }`}
+              style={inView ? { animationDelay: `${i * 100}ms` } : {}}
             >
               <div className="w-9 h-9 rounded-lg bg-[#0f3549]/8 flex items-center justify-center text-[#0f3549] mb-5">
                 {f.icon}
